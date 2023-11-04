@@ -9,6 +9,7 @@
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/pages/paso.css">
+    <script src="js/pages/paso.js" defer></script>
 </head>
 
 <body>
@@ -21,24 +22,17 @@
         <!--Barra de menú principal-->
         <div class="menu-principal">
             <ul>
-                <li><select name="seleccionable" id="seleccionable" p>
-                    <option value="" disabled selected hidden>Año</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
+                <li><select name="seleccionable" id="anio">
+                    <option value="anio-opc" disabled selected hidden>Año</option>
                 </select></li>
-                <li><select name="seleccionable" id="seleccionable" p>
-                    <option value="" disabled selected hidden>Cargo</option>
-                    <option value="senadores">Senadores</option>
-                    <option value="diputados">Diputados</option>
+                <li><select name="seleccionable" id="cargo">
+                    <option value="cargo-opc" disabled selected hidden>Cargo</option>
                 </select></li>
-                <li><select name="seleccionable" id="seleccionable" p>
-                    <option value="" disabled selected hidden>Distrito</option>
-                    <option value="buenos-aires">Buenos Aires</option>
-                    <option value="santa-fe">Santa Fe</option>
-                    <option value="cordoba">Córdoba</option>
-                    <option value="entre-rios">Entre Ríos</option>
+                <li><select name="seleccionable" id="distrito">
+                    <option value="distrito-opc" disabled selected hidden>Distrito</option>
+                </select></li>
+                <li><select name="seleccionable" id="seccion">
+                    <option value="seccion-opc" disabled selected hidden>Sección</option>
                 </select></li>
                 <li id="lupa-li"><svg xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 0 512 512">
                     <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" fill="#000000"/></svg><a href="" id="filtrar-btn">FILTRAR</a></li>
