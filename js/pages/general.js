@@ -1,250 +1,153 @@
-/*const tipoEleccion = 2;
-window.addEventListener("load", consultaElectoral);
-let cargosData
+const tipoEleccion = 0;
+const anioSeleccionado = document.getElementById("anio");
+const cargoSeleccionado = document.getElementById("cargo");
+const IdDistrito = document.getElementById("distrito");
+const seccionSeleccionada = document.getElementById("seccion");
+var datosCompletos = {};
 
 
 //---CONSULTA AÑO---//
-async function consultaElectoral(){
-    let anio = document.getElementById("anio").value;
+async function consultaElectoral() {
 
-    if (anio != ""){
+    try {
 
-        try{
+        const response = await fetch("https://resultados.mininterior.gob.ar/api/menu/periodos");
 
-            const response = await fetch("https://resultados.mininterior.gob.ar/api/menu/periodos")
-
-            if (response.ok){
-
-                const periodosData = await response.json();
-                console.log(periodosData)
-                const comboAnio = document.getElementById("anio");
-                comboAnio.innerHTML = "";
-
-                for (const periodo of periodosData){
-
-                    const opcion = document.createElement("option");
-                    opcion.value = periodo;
-                    opcion.text = periodo;
-                    comboAnio.appendChild(opcion);
-                }
-
-            } else{
-                console.error("Error al cargar los periodos");
-            }
-
-        } catch (error){
-            console.error("Error en la solicitud: " + error);
-        }
-    }
-}
-
-//---CONSULTA CARGO---//
-const comboCargo = document.getElementById("cargo");
-
-document.getElementById("anio").addEventListener("change", async() => {
-
-    const anio = document.getElementById("anio").value; // Obtiene opcion seleccionada de año
-
-    if (anio){
-
-        try{
-
-            const url = `https://resultados.mininterior.gob.ar/api/menu?año=${anio}`;
-            const response = await fetch(url);
-
-            if (response.ok){
-
-                const cargosData = await response.json();
-                console.log(cargosData); // Ver los datos que traigo del json
-                const eleccion2 = cargosData.find(item => item.IdEleccion === tipoEleccion);
-                comboCargo.innerHTML = "";
-
-                eleccion2.Cargos.forEach(cargo => {
-                    const opcion = document.createElement("option");
-                    opcion.value = cargo.IdCargo;
-                    opcion.text = cargo.Cargo;
-                    comboCargo.appendChild(opcion);
-                });
-
-            } else{
-                console.error("Error al cargar los datos");
-            }
-
-        } catch (error){
-            console.error("Error en la solicitud: " + error);
-        }
-    }
-});
-
-//---CONSULTA DISTRITO---//
-const comboDistrito = document.getElementById("distrito");
-
-document.getElementById("cargo").addEventListener("change", async() => {
-    const cargoSeleccionado = document.getElementById("cargo").value; // Obtiene opcion seleccionada de año // Obtiene opcion seleccionada de cargo
-
-    if (cargoSeleccionado){
-
-        // Obtener los distritos del cargo seleccionado
-        const distritosData = await cargosData.json();
-        console.log(distritosData);
-        const distritos = distritosData.find(cargo => cargo.IdCargo === cargoSeleccionado);
-
-        comboDistrito.innerHTML = "";
-
-        distritos.forEach(distrito => {
-            const opcion = document.createElement("option");
-            opcion.value = distrito.IdDistrito;
-            opcion.text = distrito.Distrito;
-            comboDistrito.appendChild(opcion);
-        });
-    
-    } else{
-        console.log("Ningún cargo seleccionado");
-    }
-        
-});
-*/
-
-const tipoEleccion = 0;
-const tipoRecuento = 1;
-const añoSelect = document.getElementById("anio");
-const idCargo = document.getElementById("cargo");
-const idDistrito = document.getElementById("distrito");
-const seccionSelect = document.getElementById("seccion");
-var datos = {};
-
-fetch("https://resultados.mininterior.gob.ar/api/menu/periodos")
-    .then((response) => {
         if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Error al obtener los datos');
-        }
-    })
-    .then((data) => {
-        const select = document.getElementById("anio");
 
-        data.forEach((year) => {
-            const option = document.createElement("option");
-            option.value = year;
-            option.text = year;
-            select.appendChild(option);
-        });
+            const datos = await response.json();
+            console.log(datos);
 
+            const comboAnio = document.getElementById("anio");
 
-        select.addEventListener("change", function () {
-            const añoSeleccionado = select.value;
+            datos.forEach((anio) => {
+                const opcion = document.createElement("option");
+                opcion.value = anio;
+                opcion.text = anio;
+                comboAnio.appendChild(opcion);
 
-            if (añoSeleccionado !== "") {
-                const apiUrl = "https://resultados.mininterior.gob.ar/api/menu?año=" + añoSeleccionado;
+            });
 
-                fetch(apiUrl)
-                    .then((response) => {
-                        console.log(response);
-                        if (response.ok) {
-                            return response.json();
+            comboAnio.addEventListener("change", async function () {
 
-                        } else {
-                            throw new Error('Error al obtener los datos');
-                        }
-                    })
-                    .then((data) => {
-                        const select = document.getElementById("cargo");
-                        console.log(data);
-                        select.innerHTML = "";
+                const anioSeleccionado = comboAnio.value;
 
-                        data[0].Cargos.forEach((cargo) => {
-                            const option = document.createElement("option");
-                            option.value = cargo.IdCargo;
-                            option.text = cargo.Cargo;
-                            select.appendChild(option);
+                if (anioSeleccionado !== "") {
+
+                    const url = "https://resultados.mininterior.gob.ar/api/menu?año=" + anioSeleccionado;
+
+                    const response = await fetch(url);
+                    console.log(response);
+
+                    if (response.ok) {
+
+                        const datos2 = await response.json();
+
+                        comboCargo = document.getElementById("cargo");
+                        console.log(datos2);
+
+                        comboCargo.innerHTML = "";
+
+                        datos2[0].Cargos.forEach((cargo) => {
+                            const opcion = document.createElement("option");
+                            opcion.value = cargo.IdCargo;
+                            opcion.text = cargo.Cargo;
+                            comboCargo.appendChild(opcion);
                         });
 
-                        const cargoSelect = document.getElementById("cargo");
+                        const cargoSeleccionado = document.getElementById("cargo");
 
-                        cargoSelect.addEventListener("change", function () {
-                            const idCargo = cargoSelect.value;
+                        cargoSeleccionado.addEventListener("change", function () {
 
-                            const distritos = data[tipoEleccion].Cargos[idCargo].Distritos;
+                            const IdCargo = cargoSeleccionado.value;
 
-                            const distritoSelect = document.getElementById("distrito");
-                            distritoSelect.innerHTML = "";
+                            const distritos = datos2[tipoEleccion].Cargos[IdCargo].Distritos;
+                            
+                            const distritoSeleccionado = document.getElementById("distrito");
+
+                            distritoSeleccionado.innerHTML = "";
                             console.log(distritos)
+                            
                             distritos.forEach((distrito) => {
-                                const option = document.createElement("option");
-                                option.value = distrito.IdDistrito;
-                                option.text = distrito.Distrito;
-                                distritoSelect.appendChild(option);
+                                const opcion = document.createElement("option");
+                                opcion.value = distrito.IdDistrito;
+                                opcion.text = distrito.Distrito;
+                                distritoSeleccionado.appendChild(opcion);
                             });
                         });
 
-                        const distritoSelect = document.getElementById("distrito");
+                        const distritoSeleccionado = document.getElementById("distrito");
 
-                        distritoSelect.addEventListener("change", function () {
-                            const IdDistrito = distritoSelect.value;
-                            const idCargo = cargoSelect.value;
-                            const secciones = data[tipoEleccion].Cargos[idCargo].Distritos[IdDistrito].SeccionesProvinciales[0].Secciones;
+                        distritoSeleccionado.addEventListener("change", function () {
+
+                            const IdDistrito = distritoSeleccionado.value;
+                            const IdCargo = cargoSeleccionado.value;
+                            const secciones = datos2[tipoEleccion].Cargos[IdCargo].Distritos[IdDistrito].SeccionesProvinciales[0].Secciones;
                             console.log(secciones)
-                            const seccionSelect = document.getElementById("seccion");
-                            seccionSelect.innerHTML = "";
 
-                            secciones.forEach((distrito) => {
-                                const option = document.createElement("option");
-                                option.value = distrito.IdSeccion;
-                                option.text = distrito.Seccion;
-                                seccionSelect.appendChild(option);
+                            const seccionSeleccionada = document.getElementById("seccion");
+                            seccionSeleccionada.innerHTML = "";
+
+                            secciones.forEach((seccion) => {
+                                const opcion = document.createElement("option");
+                                opcion.value = seccion.IdSeccion;
+                                opcion.text = seccion.Seccion;
+                                seccionSeleccionada.appendChild(opcion);
                             });
                         });
 
-                        seccionSelect.addEventListener("change", function(){
-                            datos = {
-                                anioEleccion: añoSelect.value,
+                        seccionSeleccionada.addEventListener("change", function(){
+                            
+                            datosCompletos = {
+                                anioEleccion: anioSeleccionado.value,
                                 tipoRecuento: tipoRecuento,
                                 tipoEleccion: tipoEleccion,
                                 categoriaId: 2,
-                                distritoId: idDistrito.value,
+                                distritoId: IdDistrito.value,
                                 seccionProvincialId: 0,
-                                seccionId: seccionSelect.value,
+                                seccionId: seccionSeleccionada.value,
                                 circuitoId: '',
                                 mesaId: '',
                               };
-                              console.log(datos);
+
+                              console.log(datosCompletos);
+
                         });
-                        
-                        
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            }
-        });
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+                    }
+
+                }
+
+            });
+        }
+
+    } catch (error) {
+        console.error("Error en la solicitud: " + error);
+    }
+
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    consultaElectoral();
+});
 
 
+async function filtrar(){
 
-    function filtrarDatos() {
+    try{
+        console.log(datosCompletos);
 
-        console.log(datos);
-
-        const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datos.anioEleccion}&tipoRecuento=${datos.tipoRecuento}&tipoEleccion=${datos.tipoEleccion}&categoriaId=${datos.categoriaId}&distritoId=${datos.distritoId}&seccionProvincialId=${datos.seccionProvincialId}&seccionId=${datos.seccionId}&circuitoId=${datos.circuitoId}&mesaId=${datos.mesaId}`;
-      
-        fetch(fetchUrl)
-          .then((response) => {
+        const objetoUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datosCompletos.anioEleccion}&tipoRecuento=${datosCompletos.tipoRecuento}&tipoEleccion=${datosCompletos.tipoEleccion}&categoriaId=${datosCompletos.categoriaId}&distritoId=${datosCompletos.distritoId}&seccionProvincialId=${datosCompletos.seccionProvincialId}&seccionId=${datosCompletos.seccionId}&circuitoId=${datosCompletos.circuitoId}&mesaId=${datosCompletos.mesaId}`;
+        
+        const response = await fetch(objetoUrl)
+        
             if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error('Error al obtener los datos');
+                
+                const datosObjeto = await response.json();
+                console.log(datosObjeto);
             }
-          })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      
+    }
+
+    catch (error) {
+    console.error("Error en la solicitud: " + error);
+}}
