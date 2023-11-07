@@ -72,6 +72,24 @@ h3 {
   color: var(--texto-footer);
 }
 
+#index-li {
+  align-items: end;
+  text-decoration: none;
+  color: #FFF;
+  font-size: 10px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  text-align: center;
+  background-color: var(--gris-claro);
+  padding: 5px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  width: 70px;
+}
+#index-li:hover{
+  background-color: #6d6c6c;
+}
+
 :root {
   --magenta: #ee3d8f;
   --celeste: #37bbed;
