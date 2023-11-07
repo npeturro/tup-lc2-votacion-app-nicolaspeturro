@@ -4,6 +4,7 @@ const anioSeleccionado = document.getElementById("anio");
 const cargoSeleccionado = document.getElementById("cargo");
 const distritoSeleccionado = document.getElementById("distrito");
 const seccionSeleccionada = document.getElementById("seccion");
+let cargo
 let datos2 = null
 let datosCompletos = {};
 
@@ -68,11 +69,12 @@ async function consultaElectoral() {
                                     cargoSeleccionado.appendChild(opcion);
 
                                 });
+                            }
 
                                 cargoSeleccionado.addEventListener("change", function () {
 
                                     const IdCargo = cargoSeleccionado.value;
-                                    const distritosDelCargo = cargo.find((elemento) => elemento.IdCargo === IdCargo);
+                                    const distritosDelCargo = cargo.Cargos.find((elemento) => elemento.IdCargo === IdCargo);
                                     console.log(distritosDelCargo)
         
                                     distritoSeleccionado.innerHTML = "";
@@ -85,44 +87,58 @@ async function consultaElectoral() {
         
                                             });
                                         })
+
+                                    distritoSeleccionado.addEventListener("change", function () {
+
+                                        const IdDistrito = distritoSeleccionado.value;
+                                        const seccionesDelDistrito = distritosDelCargo.Distritos.find((elemento) => elemento.IdDistrito === IdDistrito);
+                                        console.log(seccionesDelDistrito)
+
+                                        const seccionesProvinciales = seccionesDelDistrito.SeccionesProvinciales
+                                        //const secciones = seccionProvincial.find((elemento) => elemento.IdSeccion === IdDistrito);
+
+                                        seccionSeleccionada.innerHTML = "";
+
+                                        seccionesDelDistrito.SeccionesProvinciales[0].Seccion.forEach((distrito) => {
+                                            const opcion = document.createElement("option");
+                                            opcion.value = distrito.IdDistrito;
+                                            opcion.text = distrito.Distrito;
+                                            distritoSeleccionado.appendChild(opcion);
             
-                                    }
+                                                });
+                                            
+                                    })
+
+                                
 
                             })
-
-                        })
+                        
+                        
+                        
+                    
                     }
-                
+            
+                }
 
-                        /*datos2[0].Cargos.forEach((cargo) => {
-                            const opcion = document.createElement("option");
-                            opcion.value = cargo.IdCargo;
-                            opcion.text = cargo.Cargo;
-                            comboCargo.appendChild(opcion);
-                        });*/
+            
+                    
 
-                        //const cargoSeleccionado = document.getElementById("cargo");
+                })  
+
+                    
 
                         
 
-                            /*const distritos = datos2[tipoEleccion].Cargos[IdCargo].Distritos;
-                            
-                            const distritoSeleccionado = document.getElementById("distrito");
+                        
 
-                            distritoSeleccionado.innerHTML = "";
-                            console.log(distritos)
+                        
                             
-                            distritos.forEach((distrito) => {
-                                const opcion = document.createElement("option");
-                                opcion.value = distrito.IdDistrito;
-                                opcion.text = distrito.Distrito;
-                                distritoSeleccionado.appendChild(opcion);
-                            });
-                        });
+                            /*
+
 
                         const distritoSeleccionado = document.getElementById("distrito");
 
-                        distritoSeleccionado.addEventListener("change", function () {
+                        
 
                             const IdDistrito = distritoSeleccionado.value;
                             const IdCargo = cargoSeleccionado.value;
@@ -160,9 +176,9 @@ async function consultaElectoral() {
 
                     }*/
 
+                
                 }
 
-            
         
     } catch (error) {
         console.error("Error en la solicitud: " + error);
