@@ -1,9 +1,11 @@
-const tipoEleccion = 0;
+const tipoEleccion = 2;
+const tipoRecuento = 1;
 const anioSeleccionado = document.getElementById("anio");
 const cargoSeleccionado = document.getElementById("cargo");
-const IdDistrito = document.getElementById("distrito");
+const distritoSeleccionado = document.getElementById("distrito");
 const seccionSeleccionada = document.getElementById("seccion");
-var datosCompletos = {};
+let datos2 = null
+let datosCompletos = {};
 
 
 //---CONSULTA AÑO---//
@@ -16,52 +18,94 @@ async function consultaElectoral() {
         if (response.ok) {
 
             const datos = await response.json();
-            console.log(datos);
+            //console.log(datos);
 
-            const comboAnio = document.getElementById("anio");
+            //const comboAnio = document.getElementById("anio");
 
             datos.forEach((anio) => {
                 const opcion = document.createElement("option");
                 opcion.value = anio;
                 opcion.text = anio;
-                comboAnio.appendChild(opcion);
+                anioSeleccionado.appendChild(opcion);
 
             });
 
-            comboAnio.addEventListener("change", async function () {
+            anioSeleccionado.addEventListener("change", async function () {
+            //comboAnio.addEventListener("change", async function () {
 
-                const anioSeleccionado = comboAnio.value;
+                //const anioSeleccionado = comboAnio.value;
 
                 if (anioSeleccionado !== "") {
 
-                    const url = "https://resultados.mininterior.gob.ar/api/menu?año=" + anioSeleccionado;
+                    const url = "https://resultados.mininterior.gob.ar/api/menu?año=" + anioSeleccionado.value;
 
                     const response = await fetch(url);
                     console.log(response);
 
                     if (response.ok) {
 
-                        const datos2 = await response.json();
+                        datos2 = await response.json();
 
-                        comboCargo = document.getElementById("cargo");
+                        //comboCargo = document.getElementById("cargo");
                         console.log(datos2);
 
-                        comboCargo.innerHTML = "";
+                        cargoSeleccionado.innerHTML = "";
 
-                        datos2[0].Cargos.forEach((cargo) => {
+                        //const cargos = datos2.find((elemento) => elemento.IdEleccion === tipoEleccion)
+                        //console.log(cargos)
+                        
+                        datos2.forEach((elemento) => {
+                            
+                            if (elemento.IdEleccion == tipoEleccion){
+
+                                let cargo = elemento
+                                console.log(cargo)
+
+                                cargo.Cargos.forEach((cargo) => {
+                                    const opcion = document.createElement("option");
+                                    opcion.value = cargo.IdCargo;
+                                    opcion.text = cargo.Cargo;
+                                    cargoSeleccionado.appendChild(opcion);
+
+                                });
+
+                                cargoSeleccionado.addEventListener("change", function () {
+
+                                    const IdCargo = cargoSeleccionado.value;
+                                    const distritosDelCargo = cargo.find((elemento) => elemento.IdCargo === IdCargo);
+                                    console.log(distritosDelCargo)
+        
+                                    distritoSeleccionado.innerHTML = "";
+        
+                                    distritosDelCargo.Distritos.forEach((distrito) => {
+                                        const opcion = document.createElement("option");
+                                        opcion.value = distrito.IdDistrito;
+                                        opcion.text = distrito.Distrito;
+                                        distritoSeleccionado.appendChild(opcion);
+        
+                                            });
+                                        })
+            
+                                    }
+
+                            })
+
+                        })
+                    }
+                
+
+                        /*datos2[0].Cargos.forEach((cargo) => {
                             const opcion = document.createElement("option");
                             opcion.value = cargo.IdCargo;
                             opcion.text = cargo.Cargo;
                             comboCargo.appendChild(opcion);
-                        });
+                        });*/
 
-                        const cargoSeleccionado = document.getElementById("cargo");
+                        //const cargoSeleccionado = document.getElementById("cargo");
 
-                        cargoSeleccionado.addEventListener("change", function () {
+                        
 
-                            const IdCargo = cargoSeleccionado.value;
-
-                            const distritos = datos2[tipoEleccion].Cargos[IdCargo].Distritos;
+                            /*const distritos = datos2[tipoEleccion].Cargos[IdCargo].Distritos;
                             
                             const distritoSeleccionado = document.getElementById("distrito");
 
@@ -99,7 +143,7 @@ async function consultaElectoral() {
                         seccionSeleccionada.addEventListener("change", function(){
                             
                             datosCompletos = {
-                                anioEleccion: anioSeleccionado.value,
+                                anioEleccion: anioSeleccionado,
                                 tipoRecuento: tipoRecuento,
                                 tipoEleccion: tipoEleccion,
                                 categoriaId: 2,
@@ -114,23 +158,19 @@ async function consultaElectoral() {
 
                         });
 
-                    }
+                    }*/
 
                 }
 
-            });
-        }
-
+            
+        
     } catch (error) {
         console.error("Error en la solicitud: " + error);
     }
 
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    consultaElectoral();
-});
-
+consultaElectoral();
 
 async function filtrar(){
 
