@@ -4,9 +4,12 @@ const anioSeleccionado = document.getElementById("anio");
 const cargoSeleccionado = document.getElementById("cargo");
 const distritoSeleccionado = document.getElementById("distrito");
 const seccionSeleccionada = document.getElementById("seccion");
-let cargo
+let cargo 
 let datos2 = null
 let datosCompletos = {};
+let distritosDelCargo; 
+let seccionesProvinciales
+
 
 
 //---CONSULTA AÑO---//
@@ -59,7 +62,7 @@ async function consultaElectoral() {
                             
                             if (elemento.IdEleccion == tipoEleccion){
 
-                                let cargo = elemento
+                                cargo = elemento
                                 console.log(cargo)
 
                                 cargo.Cargos.forEach((cargo) => {
@@ -72,13 +75,11 @@ async function consultaElectoral() {
                             }
 
                                 cargoSeleccionado.addEventListener("change", function () {
-
+                                    cargo = elemento
                                     const IdCargo = cargoSeleccionado.value;
-                                    const distritosDelCargo = cargo.Cargos.find((elemento) => elemento.IdCargo === IdCargo);
+                                    distritosDelCargo = cargo.Cargos.find((elemento) => elemento.IdCargo === IdCargo);
                                     console.log(distritosDelCargo)
-        
                                     distritoSeleccionado.innerHTML = "";
-        
                                     distritosDelCargo.Distritos.forEach((distrito) => {
                                         const opcion = document.createElement("option");
                                         opcion.value = distrito.IdDistrito;
@@ -86,28 +87,29 @@ async function consultaElectoral() {
                                         distritoSeleccionado.appendChild(opcion);
         
                                             });
+                                            distritoSeleccionado.addEventListener("change", function () {
+
+                                                const IdDistrito = distritoSeleccionado.value;
+                                                seccionesDelDistrito = distritosDelCargo.Distritos.find((elemento) => elemento.IdDistrito === IdDistrito);
+                                                console.log(seccionesDelDistrito)
+        
+                                                seccionesProvinciales = seccionesDelDistrito.SeccionesProvinciales
+                                                //const secciones = seccionProvincial.find((elemento) => elemento.IdSeccion === IdDistrito);
+        
+                                                seccionSeleccionada.innerHTML = "";
+        
+                                                seccionesDelDistrito.SeccionesProvinciales[0].Seccion.forEach((distrito) => {
+                                                    const opcion = document.createElement("option");
+                                                    opcion.value = distrito.IdDistrito;
+                                                    opcion.text = distrito.Distrito;
+                                                    distritoSeleccionado.appendChild(opcion);
+                    
+                                                        });
+                                                    
+                                            })
                                         })
 
-                                    distritoSeleccionado.addEventListener("change", function () {
-
-                                        const IdDistrito = distritoSeleccionado.value;
-                                        const seccionesDelDistrito = distritosDelCargo.Distritos.find((elemento) => elemento.IdDistrito === IdDistrito);
-                                        console.log(seccionesDelDistrito)
-
-                                        const seccionesProvinciales = seccionesDelDistrito.SeccionesProvinciales
-                                        //const secciones = seccionProvincial.find((elemento) => elemento.IdSeccion === IdDistrito);
-
-                                        seccionSeleccionada.innerHTML = "";
-
-                                        seccionesDelDistrito.SeccionesProvinciales[0].Seccion.forEach((distrito) => {
-                                            const opcion = document.createElement("option");
-                                            opcion.value = distrito.IdDistrito;
-                                            opcion.text = distrito.Distrito;
-                                            distritoSeleccionado.appendChild(opcion);
-            
-                                                });
-                                            
-                                    })
+                                  
 
                                 
 
