@@ -65,23 +65,25 @@ async function consultaElectoral() {
                 }
               });
             });
-            console.log(distritoSeleccionado)
+
             distritoSeleccionado.addEventListener("change", function () {
 
               const IdDistrito = document.getElementById("distrito").value;
+              console.log(IdDistrito)
               datos_json.forEach(eleccion => {
                 if (eleccion.IdEleccion == tipoEleccion) {
                   eleccion.Cargos.forEach((cargo) => {
                     if (cargo.IdCargo == IdCargo) {
                       cargo.Distritos.forEach((distrito) => {
                         if (distrito.IdDistrito == IdDistrito) {
+                          
                           distrito.SeccionesProvinciales.forEach((seccionesProvinciales) => {
-                            seccionesProvinciales.Secciones.forEach((distrito) => {
+                            seccionesProvinciales.Secciones.forEach((seccion) => {
                               const opcion = document.createElement("option");
-                              opcion.value = distrito.IdSeccion;
-                              opcion.text = distrito.Seccion;
+                              opcion.value = seccion.IdSeccion;
+                              opcion.text = seccion.Seccion;
                               seccionSeleccionada.appendChild(opcion);
-                              console.log(seccionSeleccionada)
+                              
                             });
                           })
                         }
