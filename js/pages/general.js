@@ -3,6 +3,7 @@ const tipoRecuento = 1;
 const anioSeleccionado = document.getElementById("anio");
 const cargoSeleccionado = document.getElementById("cargo");
 const distritoSeleccionado = document.getElementById("distrito");
+const seccionProvincial = document.getElementById("hdSeccionProvincial");
 const seccionSeleccionada = document.getElementById("seccion");
 let datos_json;
 let datosCompletos = {};
@@ -49,7 +50,7 @@ async function consultaElectoral() {
             });
 
             cargoSeleccionado.addEventListener("change", function () {
-              const IdCargo = cargoSeleccionado.value;
+              IdCargo = cargoSeleccionado.value;
               datos_json.forEach(eleccion => {
                 if (eleccion.IdEleccion == tipoEleccion) {
                   eleccion.Cargos.forEach((cargo) => {
@@ -68,24 +69,41 @@ async function consultaElectoral() {
 
             distritoSeleccionado.addEventListener("change", function () {
 
-              const IdDistrito = document.getElementById("distrito").value;
-              console.log(IdDistrito)
+              console.log(distritoSeleccionado.value)
               datos_json.forEach(eleccion => {
                 if (eleccion.IdEleccion == tipoEleccion) {
                   eleccion.Cargos.forEach((cargo) => {
+                    console.log(IdCargo)
                     if (cargo.IdCargo == IdCargo) {
                       cargo.Distritos.forEach((distrito) => {
-                        if (distrito.IdDistrito == IdDistrito) {
+                        if (distrito.IdDistrito == distritoSeleccionado.value) {
                           
-                          distrito.SeccionesProvinciales.forEach((seccionesProvinciales) => {
-                            seccionesProvinciales.Secciones.forEach((seccion) => {
+                          distrito.SeccionesProvinciales.forEach((seccion) => {
+                            seccionProvincial.value = distrito.SeccionesProvinciales.IDSeccionProvincial;
+                            seccion.Secciones.forEach((secciones) => {
                               const opcion = document.createElement("option");
-                              opcion.value = seccion.IdSeccion;
-                              opcion.text = seccion.Seccion;
+                              opcion.value = secciones.IdSeccion;
+                              opcion.text = secciones.Seccion;
                               seccionSeleccionada.appendChild(opcion);
                               
                             });
                           })
+                          seccionSeleccionada.addEventListener("change", function(){
+                            
+                                datosCompletos = {
+                                    anioEleccion: anioSeleccionado,
+                                    tipoRecuento: tipoRecuento,
+                                    tipoEleccion: tipoEleccion,
+                                    categoriaId: 2,
+                                    distritoId: distritoSeleccionado.value,
+                                    seccionProvincialId: 0,
+                                    seccionId: seccionSeleccionada.value,
+                                    circuitoId: '',
+                                    mesaId: '',
+                                  };
+                              
+                                  console.log(datosCompletos);
+                                });
                         }
                       });
                     }
@@ -124,6 +142,23 @@ async function filtrar() {
   } catch (error) {
     console.error("Error en la solicitud: " + error);
   }
+}
+
+function limpiarAño() {
+  añoSelect = document.getElementById("año");
+  añoSelect.innerHTML = `<option disabled selected>Año</option>`;
+}
+function limpiarCargo() {
+  idCargo = document.getElementById("cargo");
+  idCargo.innerHTML = `<option disabled selected>Cargo</option>`;
+}
+function limpiarDistrito() {
+  idDistritoOpt = document.getElementById("distrito");
+  idDistritoOpt.innerHTML = `<option disabled selected>Distrito</option>`;
+}
+function limpiarSeccion() {
+  seccionSelect = document.getElementById("seccion");
+  seccionSelect.innerHTML = `<option disabled selected>Seccion</option>`;
 }
 
 /*
