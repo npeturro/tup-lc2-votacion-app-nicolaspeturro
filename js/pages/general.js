@@ -91,10 +91,10 @@ async function consultaElectoral() {
                           seccionSeleccionada.addEventListener("change", function(){
                             
                                 datosCompletos = {
-                                    anioEleccion: anioSeleccionado,
+                                    anioEleccion: anioSeleccionado.value,
                                     tipoRecuento: tipoRecuento,
                                     tipoEleccion: tipoEleccion,
-                                    categoriaId: 2,
+                                    categoriaId: cargoSeleccionado.value,
                                     distritoId: distritoSeleccionado.value,
                                     seccionProvincialId: 0,
                                     seccionId: seccionSeleccionada.value,
@@ -132,7 +132,7 @@ async function filtrar() {
     console.log(datosCompletos);
 
     const objetoUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datosCompletos.anioEleccion}&tipoRecuento=${datosCompletos.tipoRecuento}&tipoEleccion=${datosCompletos.tipoEleccion}&categoriaId=${datosCompletos.categoriaId}&distritoId=${datosCompletos.distritoId}&seccionProvincialId=${datosCompletos.seccionProvincialId}&seccionId=${datosCompletos.seccionId}&circuitoId=${datosCompletos.circuitoId}&mesaId=${datosCompletos.mesaId}`;
-
+    console.log(objetoUrl)
     const response = await fetch(objetoUrl);
 
     if (response.ok) {
