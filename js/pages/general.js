@@ -128,24 +128,8 @@ async function consultaElectoral() {
 
 consultaElectoral();
 
-/*async function filtrar() {
-    try {
-        console.log(datosCompletos);
-
-        const objetoUrl = `https://resultados.mininterior.gob.ar/resultados/${datosCompletos.anioEleccion}/${datosCompletos.tipoEleccion}/${datosCompletos.categoriaId}/${datosCompletos.seccionProvincialId}/0/${datosCompletos.seccionId}`;
-        //console.log(objetoUrl)
-        const response = await fetch(objetoUrl);
-
-        if (response.ok) {
-            const datosObjeto = await response.json();
-            console.log(datosObjeto);
-        }
-    } catch (error) {
-        console.error("Error en la solicitud: " + error);
-    }
-}*/
 function filtrar() {
-  //console.log(datos_json)
+  console.log(datos_json)
   console.log(datosCompletos);
   if (datosCompletos.anioEleccion == 0) {
     cartelAmarillo();
@@ -169,6 +153,12 @@ function filtrar() {
         console.log(`Mesas Escrutadas: ${mesasEscrutadas}`);
         console.log(`Electores: ${electores}`);
         console.log(`Participación sobre escrutado: ${participacion}%`);
+        const m_escrutadas = document.getElementById("m_escrutadas");
+        m_escrutadas.innerHTML = `Mesas Escrutadas<br>${mesasEscrutadas}%`;
+        const m_electores = document.getElementById("electores");
+        m_electores.innerHTML = `Electores<br>${electores}%`;
+        const m_participacion = document.getElementById("participacion");
+        m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
 
       })
       .catch((error) => {
@@ -231,15 +221,3 @@ function errorCartel(){
   mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} | ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
 
 }
-
-/*function cartelesPorcentajes(){
-  const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
-  const electores = estadoRecuento.cantidadElectores;
-  const participacion = estadoRecuento.participacionPorcentaje;
-  
-  console.log(`Mesas Escrutadas: ${mesasEscrutadas}`);
-  console.log(`Electores: ${electores}`);
-  console.log(`Participación sobre escrutado: ${participacion}%`);
-  
-}
-cartelesPorcentajes();*/
