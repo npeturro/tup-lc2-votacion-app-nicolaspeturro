@@ -1,15 +1,17 @@
 const tipoEleccion = 2;
 const tipoRecuento = 1;
-const anioSeleccionado = document.getElementById("anio");
-const cargoSeleccionado = document.getElementById("cargo");
-const distritoSeleccionado = document.getElementById("distrito");
+let anioSeleccionado = document.getElementById("anio");
+let cargoSeleccionado = document.getElementById("cargo");
+let distritoSeleccionado = document.getElementById("distrito");
 const seccionProvincial = document.getElementById("hdSeccionProvincial");
-const seccionSeleccionada = document.getElementById("seccion");
+let seccionSeleccionada = document.getElementById("seccion");
 let datos_json;
 let datosCompletos = {};
 let distritosDelCargo;
 let seccionesProvinciales;
 let IdCargo;
+
+consultaElectoral();
 
 //---CONSULTA AÑO---//
 async function consultaElectoral() {
@@ -26,87 +28,122 @@ async function consultaElectoral() {
         opcion.text = anio;
         anioSeleccionado.appendChild(opcion);
       });
+    }
+  } catch (error) {
+    console.error("Error en la solicitud: " + error);
+  }
+}
 
-      anioSeleccionado.addEventListener("change", async function () {
-        if (anioSeleccionado !== "") {
-          const url = "https://resultados.mininterior.gob.ar/api/menu?año=" + anioSeleccionado.value;
-          const response = await fetch(url);
-          console.log(response);
+function comboAnio() {
+  limpiarCargo()
+  limpiarDistrito();
+  limpiarSeccion()
+  anioSeleccionado.addEventListener("change", async function () {
+    try {
+      if (anioSeleccionado !== "") {
+        const url = "https://resultados.mininterior.gob.ar/api/menu?año=" + anioSeleccionado.value;
+        const response = await fetch(url);
+        console.log(response);
 
-          if (response.ok) {
-            datos_json = await response.json();
-            cargoSeleccionado.innerHTML = "";
+        if (response.ok) {
+          datos_json = await response.json();
+          cargoSeleccionado.innerHTML = "";
 
-            datos_json.forEach((elemento) => {
-              if (elemento.IdEleccion == tipoEleccion) {
-                // console.log(elemento);
+          datos_json.forEach((elemento) => {
+            if (elemento.IdEleccion == tipoEleccion) {
+              // console.log(elemento);
 
-                elemento.Cargos.forEach((cargo) => {
-                  const opcion = document.createElement("option");
-                  opcion.value = cargo.IdCargo;
-                  opcion.text = cargo.Cargo;
-                  cargoSeleccionado.appendChild(opcion);
+              elemento.Cargos.forEach((cargo) => {
+                const opcion = document.createElement("option");
+                opcion.value = cargo.IdCargo;
+                opcion.text = cargo.Cargo;
+                cargoSeleccionado.appendChild(opcion);
+              });
+            }
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error en la solicitud: " + error);
+    }
+  });
+}
+
+function comboCargo() {
+  //limpiarDistrito()
+  //limpiarSeccion()
+  cargoSeleccionado.addEventListener("change", function () {
+    IdCargo = cargoSeleccionado.value;
+    datos_json.forEach(eleccion => {
+      if (eleccion.IdEleccion == tipoEleccion) {
+        eleccion.Cargos.forEach((cargo) => {
+          if (cargo.IdCargo == IdCargo) {
+            cargo.Distritos.forEach((distrito) => {
+              const opcion = document.createElement("option");
+              opcion.value = distrito.IdDistrito;
+              opcion.text = distrito.Distrito;
+              distritoSeleccionado.appendChild(opcion);
+            });
+          }
+        });
+      }
+    });
+  });
+}
+
+function comboDistrito() {
+  //limpiarSeccion();
+  distritoSeleccionado.addEventListener("change", function () {
+    //console.log(distritoSeleccionado.value)
+    datos_json.forEach(eleccion => {
+      if (eleccion.IdEleccion == tipoEleccion) {
+        eleccion.Cargos.forEach((cargo) => {
+          //console.log(IdCargo)
+          if (cargo.IdCargo == IdCargo) {
+            cargo.Distritos.forEach((distrito) => {
+              if (distrito.IdDistrito == distritoSeleccionado.value) {
+                distrito.SeccionesProvinciales.forEach((seccion) => {
+                  seccionProvincial.value = distrito.SeccionesProvinciales.IDSeccionProvincial;
+                  seccion.Secciones.forEach((secciones) => {
+                    const opcion = document.createElement("option");
+                    opcion.value = secciones.IdSeccion;
+                    opcion.text = secciones.Seccion;
+                    seccionSeleccionada.appendChild(opcion);
+                  });
                 });
               }
             });
+          }
+        });
+      }
+    });
+  });
+}
+                          
+function comboSeccion() {
+  seccionSeleccionada.addEventListener("change", function () {
 
-            cargoSeleccionado.addEventListener("change", function () {
-              IdCargo = cargoSeleccionado.value;
-              datos_json.forEach(eleccion => {
-                if (eleccion.IdEleccion == tipoEleccion) {
-                  eleccion.Cargos.forEach((cargo) => {
-                    if (cargo.IdCargo == IdCargo) {
-                      cargo.Distritos.forEach((distrito) => {
-                        const opcion = document.createElement("option");
-                        opcion.value = distrito.IdDistrito;
-                        opcion.text = distrito.Distrito;
-                        distritoSeleccionado.appendChild(opcion);
-                      });
-                    }
-                  });
-                }
-              });
-            });
+  datosCompletos = {
+    anioEleccion: anioSeleccionado.value,
+    tipoRecuento: tipoRecuento,
+    tipoEleccion: tipoEleccion,
+    categoriaId: cargoSeleccionado.value,
+    distritoId: distritoSeleccionado.value,
+    seccionProvincialId: 2,
+    seccionId: seccionSeleccionada.value,
+    circuitoId: '',
+    mesaId: '',
+  };
 
-            distritoSeleccionado.addEventListener("change", function () {
-
-              //console.log(distritoSeleccionado.value)
-              datos_json.forEach(eleccion => {
-                if (eleccion.IdEleccion == tipoEleccion) {
-                  eleccion.Cargos.forEach((cargo) => {
-                    //console.log(IdCargo)
-                    if (cargo.IdCargo == IdCargo) {
-                      cargo.Distritos.forEach((distrito) => {
-                        if (distrito.IdDistrito == distritoSeleccionado.value) {
-
-                          distrito.SeccionesProvinciales.forEach((seccion) => {
-                            seccionProvincial.value = distrito.SeccionesProvinciales.IDSeccionProvincial;
-                            seccion.Secciones.forEach((secciones) => {
-                              const opcion = document.createElement("option");
-                              opcion.value = secciones.IdSeccion;
-                              opcion.text = secciones.Seccion;
-                              seccionSeleccionada.appendChild(opcion);
-
-                            });
-                          })
-                          seccionSeleccionada.addEventListener("change", function () {
-
-                            datosCompletos = {
-                              anioEleccion: anioSeleccionado.value,
-                              tipoRecuento: tipoRecuento,
-                              tipoEleccion: tipoEleccion,
-                              categoriaId: cargoSeleccionado.value,
-                              distritoId: distritoSeleccionado.value,
-                              seccionProvincialId: 2,
-                              seccionId: seccionSeleccionada.value,
-                              circuitoId: '',
-                              mesaId: '',
-                            };
-
-                            //   console.log(datosCompletos);
-                          });
-                        }
-                      });
+  //   console.log(datosCompletos);
+});
+}
+                      
+                      
+                      
+                      
+                      
+                      /*});
                     }
                   });
                 }
@@ -124,9 +161,9 @@ async function consultaElectoral() {
   } catch (error) {
     console.error("Error en la solicitud: " + error);
   }
-}
+}*/
 
-consultaElectoral();
+//consultaElectoral();
 
 function filtrar() {
   console.log(datos_json)
@@ -167,28 +204,32 @@ function filtrar() {
   }
 }
 
-function limpiarAño() {
-  añoSelect = document.getElementById("año");
-  añoSelect.innerHTML = `<option disabled selected>Año</option>`;
+//--Funciones de limpieza--//
+function limpiarAnio() {
+  anioSeleccionado = document.getElementById("anio");
+  anioSeleccionado.innerHTML = `<option disabled selected>Año</option>`;
 }
 function limpiarCargo() {
-  idCargo = document.getElementById("cargo");
-  idCargo.innerHTML = `<option disabled selected>Cargo</option>`;
+  //idCargo = document.getElementById("cargo");
+  cargoSeleccionado = document.getElementById("cargo");
+  cargoSeleccionado.innerHTML = `<option disabled selected>Cargo</option>`;
 }
 function limpiarDistrito() {
-  idDistritoOpt = document.getElementById("distrito");
-  idDistritoOpt.innerHTML = `<option disabled selected>Distrito</option>`;
+  //idDistritoOpt = document.getElementById("distrito");
+  distritoSeleccionado = document.getElementById("distrito");
+  distritoSeleccionado.innerHTML = `<option disabled selected>Distrito</option>`;
 }
 function limpiarSeccion() {
-  seccionSelect = document.getElementById("seccion");
-  seccionSelect.innerHTML = `<option disabled selected>Seccion</option>`;
+  seccionSeleccionada = document.getElementById("seccion");
+  seccionSeleccionada.innerHTML = `<option disabled selected>Seccion</option>`;
 }
 
+
+//--Funciones Mensajes--//
 function cartelRojo(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
   setTimeout(cartelRojo_sacar,3000)
-
 }
 function cartelVerde(){
   const mensajeError = document.getElementById("mensaje-exito");
@@ -201,11 +242,9 @@ function cartelAmarillo(){
   mensajeError.innerHTML = "Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR"
   setTimeout(cartelAmarillo_sacar,5000)
 }
-
 function cartelRojo_sacar(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "none";
-
 }
 function cartelVerde_sacar(){
   const mensajeError = document.getElementById("mensaje-exito");
@@ -219,5 +258,4 @@ function errorCartel(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} | ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
-
 }

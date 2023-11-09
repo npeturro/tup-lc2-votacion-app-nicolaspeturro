@@ -9,6 +9,8 @@
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/pages/generales.css">
+    <script src="js/common.js" defer></script>
+    <script src="js/pages/general.js" defer></script>
     
 </head>
 
@@ -22,17 +24,17 @@
         <!--Barra de menú principal-->
         <div class="menu-principal">
             <ul>
-                <li><select name="seleccionable" id="anio">
+                <li><select name="seleccionable" id="anio" onclick="comboAnio()">
                     <option value="anio-opc" disabled selected hidden>Año</option>
                 </select></li>
-                <li><select name="seleccionable" id="cargo">
+                <li><select name="seleccionable" id="cargo" onclick="comboCargo()">
                     <option value="cargo-opc" disabled selected hidden>Cargo</option>
                 </select></li>
-                <li><select name="seleccionable" id="distrito">
+                <li><select name="seleccionable" id="distrito" onclick="comboDistrito()">
                     <option value="distrito-opc" disabled selected hidden>Distrito</option>
                 </select></li>
                 <input type="hidden" id="hdSeccionProvincial" name="hdSeccionProvincial">
-                <li><select name="seleccionable" id="seccion">
+                <li><select name="seleccionable" id="seccion" onclick="comboSeccion()">
                     <option value="seccion-opc" disabled selected hidden>Sección</option>
                 </select></li>
                 <li id="lupa-li"><svg xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 0 512 512">
@@ -327,7 +329,6 @@
     </footer>
 </body>
 
-<script src="js/common.js" defer></script>
-<script src="js/pages/general.js" defer></script>
+
 
 </html>
