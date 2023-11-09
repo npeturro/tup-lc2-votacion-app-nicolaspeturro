@@ -70,7 +70,7 @@ async function consultaElectoral() {
 
             distritoSeleccionado.addEventListener("change", function () {
 
-              console.log(distritoSeleccionado.value)
+              //console.log(distritoSeleccionado.value)
               datos_json.forEach(eleccion => {
                 if (eleccion.IdEleccion == tipoEleccion) {
                   eleccion.Cargos.forEach((cargo) => {
@@ -145,9 +145,8 @@ consultaElectoral();
     }
 }*/
 function filtrar() {
-  console.log(datos_json)
+  //console.log(datos_json)
   console.log(datosCompletos);
-  errorCartel()
   if (datosCompletos.anioEleccion == 0) {
     cartelAmarillo();
   } else {
@@ -163,9 +162,17 @@ function filtrar() {
       })
       .then((data) => {
         console.log(data);
+        const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
+        const electores = data.estadoRecuento.cantidadElectores;
+        const participacion = data.estadoRecuento.participacionPorcentaje;
+        
+        console.log(`Mesas Escrutadas: ${mesasEscrutadas}`);
+        console.log(`Electores: ${electores}`);
+        console.log(`Participación sobre escrutado: ${participacion}%`);
+
       })
       .catch((error) => {
-        cartelRojo();
+        errorCartel()
       });
   }
 }
@@ -221,7 +228,18 @@ function cartelAmarillo_sacar(){
 function errorCartel(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
-  mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} > Generales > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text}`;
-
+  mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} | ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
 
 }
+
+/*function cartelesPorcentajes(){
+  const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
+  const electores = estadoRecuento.cantidadElectores;
+  const participacion = estadoRecuento.participacionPorcentaje;
+  
+  console.log(`Mesas Escrutadas: ${mesasEscrutadas}`);
+  console.log(`Electores: ${electores}`);
+  console.log(`Participación sobre escrutado: ${participacion}%`);
+  
+}
+cartelesPorcentajes();*/
