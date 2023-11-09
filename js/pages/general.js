@@ -47,7 +47,6 @@ function comboAnio() {
 
         if (response.ok) {
           datos_json = await response.json();
-          cargoSeleccionado.innerHTML = "";
 
           datos_json.forEach((elemento) => {
             if (elemento.IdEleccion == tipoEleccion) {
@@ -70,9 +69,12 @@ function comboAnio() {
 }
 
 function comboCargo() {
-  //limpiarDistrito()
-  //limpiarSeccion()
+  
   cargoSeleccionado.addEventListener("change", function () {
+
+    limpiarDistrito()
+    limpiarSeccion()
+
     IdCargo = cargoSeleccionado.value;
     datos_json.forEach(eleccion => {
       if (eleccion.IdEleccion == tipoEleccion) {
@@ -92,8 +94,11 @@ function comboCargo() {
 }
 
 function comboDistrito() {
-  //limpiarSeccion();
+  
   distritoSeleccionado.addEventListener("change", function () {
+
+    limpiarSeccion();
+    
     //console.log(distritoSeleccionado.value)
     datos_json.forEach(eleccion => {
       if (eleccion.IdEleccion == tipoEleccion) {
