@@ -167,7 +167,7 @@ async function filtrar() {
       if (datosCompletos.seccionProvincialId == null){
         datosCompletos.seccionProvincialId = 0;
       }
-
+      //YA CAMBIÉ TODO A ASYNC-TRY-CATCH
       const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datosCompletos.anioEleccion}&tipoRecuento=${datosCompletos.tipoRecuento}&tipoEleccion=${datosCompletos.tipoEleccion}&categoriaId=${datosCompletos.categoriaId}&distritoId=${datosCompletos.distritoId}&seccionProvincialId=${datosCompletos.seccionProvincialId}&seccionId=${datosCompletos.seccionId}&circuitoId=${datosCompletos.circuitoId}&mesaId=${datosCompletos.mesaId}`;
       const response = await fetch(fetchUrl);
 
@@ -191,7 +191,8 @@ async function filtrar() {
   const m_participacion = document.getElementById("participacion");
   m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
   
-  try{
+  //TENEMOS Q IMPORTAR EL MODULO MAPAS.JS Y AUN NO PUDE Y ES POR PROBLEMAS DE SEGURIDAD, TE BLOQUEA LA PAGINA PORQ CREE Q ES UN VIRUS
+  /*try{
     const response = await fetch('mapas.json')
 
     if (response.ok){
@@ -207,7 +208,7 @@ async function filtrar() {
      
   } catch (error) {
     console.error("Error en la solicitud: " + error);
-  }
+  }*/
   
 }
 
