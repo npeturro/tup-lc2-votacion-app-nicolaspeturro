@@ -50,6 +50,8 @@
     padding: 5px;
     margin-right: 15px;
     font-weight: bold;
+    max-width: 150px;
+    width: 150px;
 }
 #lupa-li{
     text-decoration: none;

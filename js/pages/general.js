@@ -1,9 +1,10 @@
+import { provincias } from "js/pages/mapas.js";
 const tipoEleccion = 2;
 const tipoRecuento = 1;
 let anioSeleccionado = document.getElementById("anio");
 let cargoSeleccionado = document.getElementById("cargo");
 let distritoSeleccionado = document.getElementById("distrito");
-const seccionProvincial = document.getElementById("hdSeccionProvincial");
+let seccionProvincial = document.getElementById("hdSeccionProvincial");
 let seccionSeleccionada = document.getElementById("seccion");
 let datos_json;
 let datosCompletos = {};
@@ -134,7 +135,7 @@ function comboSeccion() {
     tipoEleccion: tipoEleccion,
     categoriaId: cargoSeleccionado.value,
     distritoId: distritoSeleccionado.value,
-    seccionProvincialId: 2,
+    seccionProvincialId: '',
     seccionId: seccionSeleccionada.value,
     circuitoId: '',
     mesaId: '',
@@ -143,32 +144,7 @@ function comboSeccion() {
   //   console.log(datosCompletos);
 });
 }
-                      
-                      
-                      
-                      
-                      
-                      /*});
-                    }
-                  });
-                }
-              })
-
-
-
-
-            }
-            );
-          }
-        }
-      });
-    }
-  } catch (error) {
-    console.error("Error en la solicitud: " + error);
-  }
-}*/
-
-//consultaElectoral();
+                    
 
 function filtrar() {
   console.log(datos_json)
@@ -176,8 +152,10 @@ function filtrar() {
   if (datosCompletos.anioEleccion == 0) {
     cartelAmarillo();
   } else {
-    const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datosCompletos.anioEleccion}&tipoRecuento=${datosCompletos.tipoRecuento}&tipoEleccion=${datosCompletos.tipoEleccion}&categoriaId=${datosCompletos.categoriaId}&distritoId=${datosCompletos.distritoId}`;//&seccionProvincialId=${datosCompletos.seccionProvincialId}&seccionId=${datosCompletos.seccionId}&circuitoId=${datosCompletos.circuitoId}&mesaId=${datosCompletos.mesaId}`;
-    //IR DEBUGGEANDO ACA LA URL AHORA TRAE LOS DATOS PERO ESTA ACORTADA
+    if (datosCompletos.seccionProvincialId == null){
+      datosCompletos.seccionProvincialId = 0;
+    }
+    const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datosCompletos.anioEleccion}&tipoRecuento=${datosCompletos.tipoRecuento}&tipoEleccion=${datosCompletos.tipoEleccion}&categoriaId=${datosCompletos.categoriaId}&distritoId=${datosCompletos.distritoId}&seccionProvincialId=${datosCompletos.seccionProvincialId}&seccionId=${datosCompletos.seccionId}&circuitoId=${datosCompletos.circuitoId}&mesaId=${datosCompletos.mesaId}`;
     fetch(fetchUrl)
       .then((response) => {
         if (response.ok) {
@@ -191,19 +169,22 @@ function filtrar() {
         const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
         const electores = data.estadoRecuento.cantidadElectores;
         const participacion = data.estadoRecuento.participacionPorcentaje;
-        
-        console.log(`Mesas Escrutadas: ${mesasEscrutadas}`);
-        console.log(`Electores: ${electores}`);
-        console.log(`Participación sobre escrutado: ${participacion}%`);
+        const mapaPrincipal = datosCompletos.distritoId;
+
         const m_escrutadas = document.getElementById("m_escrutadas");
-        m_escrutadas.innerHTML = `Mesas Escrutadas<br>${mesasEscrutadas}%`;
+        m_escrutadas.innerHTML = `Mesas Escrutadas<br>${mesasEscrutadas}`;
         const m_electores = document.getElementById("electores");
-        m_electores.innerHTML = `Electores<br>${electores}%`;
+        m_electores.innerHTML = `Electores<br>${electores}`;
         const m_participacion = document.getElementById("participacion");
         m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
+        const mapa_principal = document.getElementById("mapa_principal");
+        mapa_principal.innerHTML = `${provincias[1]}`
+        mapa_principal.innerHTML = `<svg height="210" width="800"><path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1" fill-rule="evenodd" d="M171 55L163 53L150 45L147 50L143 49L133 60L114 60L114 151L116 151L120 155L122 156L126 153L128 149L124 145L126 143L126 138L128 138L129 133L126 129L126 122L134 126L139 126L169 119L179 114L189 97L190 89L189 87L186 87L182 82L185 75L181 69L171 63L170 64L170 58z"></path></svg>`;
+
 
       })
       .catch((error) => {
+        console.log(error)
         errorCartel()
       });
   }
@@ -262,5 +243,5 @@ function cartelAmarillo_sacar(){
 function errorCartel(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
-  mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} | ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
+  mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
 }
