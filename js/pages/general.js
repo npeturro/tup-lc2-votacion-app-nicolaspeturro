@@ -11,6 +11,10 @@ let datos_json;
 let datosCompletos = {};
 let IdCargo;
 let data; //Ultimo JSON de boton Filtrar()
+let mesasEscrutadas;
+let electores;
+let participacion;
+let vTotalizadosPositivos;
 
 //---CONSULTA AÑO---//
 async function consultaElectoral() {
@@ -183,9 +187,11 @@ async function filtrar() {
     }
 
   //--Llenado de cuadros pequeños--//
-  const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
-  const electores = data.estadoRecuento.cantidadElectores;
-  const participacion = data.estadoRecuento.participacionPorcentaje;
+  mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
+  electores = data.estadoRecuento.cantidadElectores;
+  participacion = data.estadoRecuento.participacionPorcentaje;
+
+  vTotalizadosPositivos = data.valoresTotalizadosPositivos;
 
   const m_escrutadas = document.getElementById("m_escrutadas");
   m_escrutadas.innerHTML = `Mesas Escrutadas<br>${mesasEscrutadas}`;
@@ -212,16 +218,19 @@ async function filtrar() {
 
 function agregarInforme(){
 
-  const vAnio = datosCompletos.anioEleccion
-  const vTipoRecuento = datosCompletos.tipoRecuento
-  const vTipoEleccion = datosCompletos.tipoEleccion
-  const vCategoriaId = datosCompletos.categoriaId
-  const vDistrito = datosCompletos.distritoId
-  const vSeccionProvincial = datosCompletos.seccionProvincialId
-  const vSeccionID = datosCompletos.seccionId
+  const vAnio = datosCompletos.anioEleccion;
+  const vTipoRecuento = datosCompletos.tipoRecuento;
+  const vTipoEleccion = datosCompletos.tipoEleccion;
+  const vCategoriaId = datosCompletos.categoriaId;
+  const vDistrito = datosCompletos.distritoId;
+  const vSeccionProvincial = datosCompletos.seccionProvincialId;
+  const vSeccionID = datosCompletos.seccionId;
+  const vCircuitoID = datosCompletos.circuitoId;
+  const vMesaID = datosCompletos.mesaId;
+
 
   //Creando el Array para agregarlo al LocalStorage
-  let informe = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistrito, vSeccionProvincial, vSeccionID];
+  let informe = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistrito, vSeccionProvincial, vSeccionID, vCircuitoID, vMesaID, mesasEscrutadas, electores, participacion, vTotalizadosPositivos];
 
   //Obteniendo el Array actual de localStorage o inicializando uno nuevo
   let informesArray = JSON.parse(localStorage.getItem('INFORMES')) || [];
