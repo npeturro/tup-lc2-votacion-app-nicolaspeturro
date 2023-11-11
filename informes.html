@@ -9,6 +9,8 @@
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="css/common.css" />
     <link rel="stylesheet" href="css/pages/informers.css">
+    <script src="js/pages/mapas.js" defer></script>
+    <script src="js/pages/informes.js" defer></script>
 </head>
 
 <body>
@@ -48,7 +50,7 @@
                     <th>DATOS POR AGRUPACIÓN</th>
                 </thead>
                 <tbody>
-                    <td>
+                    <td id="provincia-informe">
                         <svg style="height: 210;">
                             <path class="leaflet-interactive" stroke="#18a0fb" stroke-opacity="1" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" fill="#18a0fb" fill-opacity="1"
@@ -58,8 +60,8 @@
                         </svg>
                     </td>
                     <td class="tabla-elecciones">
-                        <p class="texto-elecciones-chico"><b>Elecciones 2020 | Generales</b></p>
-                        <p class="texto-path-chico">2020 > Generales > Provisorio > Senadores
+                        <p class="texto-elecciones-chico" id="titulo-informe"><b>Elecciones 2020 | Generales</b></p>
+                        <p class="texto-path-chico" id="subtitulo-informe">2020 > Generales > Provisorio > Senadores
                             Nacionales > Buenos Aires</p>
 
                     </td>
@@ -110,7 +112,7 @@
                                     </path>
                                 </g>
                             </svg>
-                            <p>Mesas Escrutadas 62.71%</p>
+                            <p id="escrutadas-informe">Mesas Escrutadas</p>
                         </div>
                         <div class="electores">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +202,7 @@
                                                                 c-0.238-0.571-0.797-0.944-1.416-0.944l0,0c-4.601,1.534-7.55-4.364-8.966-9.319c-2.595-10.027-1.18-14.864,0.473-17.105H180.521z">
                                 </path>
                             </svg>
-                            <p>Electores<br>62.71%</p>
+                            <p id="electores-informe">Electores<br></p>
                         </div>
                         <div class="participacion">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -257,7 +259,7 @@
                         C184.178,409.323,186.501,406.999,189.368,406.999z"></path>
                                 <rect x="195.975" y="387.534" fill="#FFFFFF" width="69.013" height="14.393"></rect>
                             </svg>
-                            <p>Participación sobre escrutados<br>62.71%</p>
+                            <p id="participacion-informe">Participación sobre escrutados<br></p>
                         </div>
                     </td>
                     <td>

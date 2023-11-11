@@ -1,3 +1,6 @@
+let data;
+let datos;
+
 (async () => {
     
     //Verificar si hay datos en el localStorage
@@ -9,21 +12,23 @@
         // Recorrer el array
         informes.forEach(async (datos) => {
         // Separar los datos (suponiendo que son una cadena y necesitan ser divididos)
-        const informesSeparados = datos.split(',');
+        //const informesSeparados = datos.split(',');
 
         // Construir la URL con los datos separados
-        const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${informesSeparados[0]}&tipoRecuento=${informesSeparados[1]}&tipoEleccion=${informesSeparados[2]}&categoriaId=${informesSeparados[3]}&distritoId=${informesSeparados[4]}&seccionProvincialId=${informesSeparados[5]}&seccionId=${informesSeparados[6]}&circuitoId=${informesSeparados[7]}&mesaId=${informesSeparados[8]}`;
+        const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datos[0]}&tipoRecuento=${datos[1]}&tipoEleccion=${datos[2]}&categoriaId=${datos[3]}&distritoId=${datos[4]}&seccionProvincialId=${datos[5]}&seccionId=${datos[6]}&circuitoId=${datos[7]}&mesaId=${datos[8]}`;
 
         try {
             // Realizar la consulta a la API
             const response = await fetch(fetchUrl);
 
             if (response.ok) {
-                const data = await response.json();
+                data = await response.json();
                 console.log(data);
-
+                console.log(datos);
+                console.log(informes)
                 
-
+                mostrarProvincia()
+                //mostrarDatos()
 
             } else {
                 console.error('Error en la solicitud a la API');
@@ -39,3 +44,75 @@
 }
 
 })();
+
+
+
+function mostrarProvincia(){
+    
+    let mapa_principal = document.getElementById("provincia-informe");
+    let idMapas = informes[0].value[3];
+    console.log(idMapas)
+    //ver si se puede cambiar la forma en la qe trae el nombre
+    mapa_principal.innerHTML = `${provincias[idMapas]}`;
+}
+function mostrarEleccion(){
+    let titulo = document.getElementById("titulo-informe");
+    let subtitulo = document.getElementById("subtitulo-informe");
+    titulo.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales`;
+    subtitulo.innerHTML = `${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
+}
+function mostrarDatos(){
+    let mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
+    let electores = data.estadoRecuento.cantidadElectores;
+    let participacion = data.estadoRecuento.participacionPorcentaje;
+
+    const m_escrutadas = document.getElementById("escrutadas-informe");
+    m_escrutadas.innerHTML = `Mesas Escrutadas<br>${mesasEscrutadas}`;
+    const m_electores = document.getElementById("electores-informe");
+    m_electores.innerHTML = `Electores<br>${electores}`;
+    const m_participacion = document.getElementById("participacion-informe");
+    m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
+}
+function mostrarAgrupacion(){
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function cartelRojo(){
+    const mensajeError = document.getElementById("mensaje-error");
+    mensajeError.style.display = "flex";
+    setTimeout(cartelRojo_sacar,3000)
+  }
+  function cartelVerde(){
+    const mensajeError = document.getElementById("mensaje-exito");
+    mensajeError.style.display = "flex";
+    setTimeout(cartelVerde_sacar,3000)
+  }
+  function cartelAmarillo(){
+    const mensajeError = document.getElementById("mensaje-no-completo");
+    mensajeError.style.display = "flex";
+    mensajeError.innerHTML = "No se encuentran valores que mostrar"
+    setTimeout(cartelAmarillo_sacar,5000)
+  }
+  function cartelRojo_sacar(){
+    const mensajeError = document.getElementById("mensaje-error");
+    mensajeError.style.display = "none";
+  }
+  function cartelVerde_sacar(){
+    const mensajeError = document.getElementById("mensaje-exito");
+    mensajeError.style.display = "none";
+  }
+  function cartelAmarillo_sacar(){
+    const mensajeError = document.getElementById("mensaje-no-completo");
+    mensajeError.style.display = "none";
+  }
