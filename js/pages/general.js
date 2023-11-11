@@ -191,6 +191,17 @@ async function filtrar() {
   m_electores.innerHTML = `Electores<br>${electores}`;
   const m_participacion = document.getElementById("participacion");
   m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
+  const titulo = document.getElementById("titulo");
+  const subtitulo = document.getElementById("subtitulo");
+  titulo.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales`;
+  subtitulo.innerHTML = `${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
+
+  const valoresPositivos = data.valoresTotalizadosPositivos.idAgrupacion;
+  {valoresPositivos:{colorPleno, colorLiviano}}
+
+
+
+
 
   //--Llenado de cuadros grandes--//
 
@@ -199,7 +210,7 @@ async function filtrar() {
 
   
   //TENEMOS Q IMPORTAR EL MODULO MAPAS.JS Y AUN NO PUDE Y ES POR PROBLEMAS DE SEGURIDAD, TE BLOQUEA LA PAGINA PORQ CREE Q ES UN VIRUS
-  /*try{
+  try{
     const response = await fetch('mapas.json')
 
     if (response.ok){
@@ -215,7 +226,7 @@ async function filtrar() {
      
   } catch (error) {
     console.error("Error en la solicitud: " + error);
-  }*/
+  }
   
 }
 
