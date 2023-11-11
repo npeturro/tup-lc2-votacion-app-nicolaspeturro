@@ -183,7 +183,6 @@ async function filtrar() {
     }
 
   //--Llenado de cuadros pequeños--//
-  console.log("LA RE PUTA MADRE")
   const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
   const electores = data.estadoRecuento.cantidadElectores;
   const participacion = data.estadoRecuento.participacionPorcentaje;
@@ -199,31 +198,15 @@ async function filtrar() {
   titulo.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales`;
   subtitulo.innerHTML = `${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
   agrupacionPolitica()
+  agregarMapa()
+  resumenVotos()
 
   //--Llenado de cuadros grandes--//
 
   //--Cuadro agrupaciones politicas--//
   
 
-  
-  //TENEMOS Q IMPORTAR EL MODULO MAPAS.JS Y AUN NO PUDE Y ES POR PROBLEMAS DE SEGURIDAD, TE BLOQUEA LA PAGINA PORQ CREE Q ES UN VIRUS
-  /*try{
-    const response = await fetch('mapas.json')
 
-    if (response.ok){
-
-      let mapas = await response.json();
-      console.log(mapas);
-
-      let mapa_principal = document.getElementById("mapa_principal");
-      let mapaPrincipal = datosCompletos.distritoId;
-      mapa_principal.innerHTML = `${mapas[7]}`
-
-    }
-     
-  } catch (error) {
-    console.error("Error en la solicitud: " + error);
-  }*/
   
 }
 
@@ -259,26 +242,60 @@ function agregarInforme(){
 }
 //--Funcion Agrupacion Politica--//
 function agrupacionPolitica(){
+  const cuadroAgrupacion = document.getElementById("ag-politica");
+  cuadroAgrupacion.innerHTML = ``
   let indice = 0;
   data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
 
-    const cuadroAgrupacion = document.getElementById("ag-politica");
-    agrupaciones.listas.forEach((lista) => { 
-    let valorCalulado = lista.votos * 100 / valoresTotalizadosPositivos.votos;   
+    //ACORDARSE DE ARMARLO CON LA LISTA EN PASO
+
+    //agrupaciones.listas.forEach((lista) => { 
+    //const valorCalculado = agrupaciones.votos * 100 / valoresTotalizadosPositivos.votos;   
     const datosAgrupacion = `<p><b>${agrupaciones.nombreAgrupacion}</b></p>
     <hr>
-    <p>${lista.nombre} ${valorCalulado} % ${lista.votos} votos</p>
-    <div class="progress" style="background: ${colores[indice].colorPleno}">
-        <div class="progress-bar" style="width:73%; background: ${colores[indice].colorLiviano}">
-            <span class="progress-bar-text">${valorCalulado}%</span>
+    <p>${agrupaciones.votosPorcentaje}% ${agrupaciones.votos} VOTOS</p>
+    <div class="progress" style="background: ${colores[indice].colorLiviano}">
+        <div class="progress-bar" style="width:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}">
+            <span class="progress-bar-text">${agrupaciones.votosPorcentaje}%</span>
         </div>
     </div>`
     cuadroAgrupacion.innerHTML += datosAgrupacion;
     indice ++;
   });
-});
-
+  
 }
+
+function agregarMapa(){
+  //agregar a funcion y cambiar nombre
+  let titulo_mapas = document.getElementById("mapas_titulo");
+  let mapa_principal = document.getElementById("mapa_principal");
+  let idMapas = datosCompletos.distritoId;
+  //ver si se puede cambiar la forma en la qe trae el nombre
+  titulo_mapas.innerHTML = `${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text}`
+  mapa_principal.innerHTML = `${provincias[idMapas]}`
+}
+
+function resumenVotos(){
+  const resumenVotos = document.getElementById("resumen-votos");
+  resumenVotos.innerHTML = ``
+  let indice = 0;
+  data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
+
+    const datosAgrupacion = `<div class="bar" style="--bar-value:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}" data-name="" title="${agrupaciones.nombreAgrupacion} 
+    ${agrupaciones.votosPorcentaje}%" ></div>`
+    resumenVotos.innerHTML += datosAgrupacion;
+    indice ++;
+  });
+  
+}
+
+
+
+
+
+
+
+
 
 //--Funciones de limpieza--//
 function limpiarAnio() {
@@ -328,8 +345,8 @@ function cartelAmarillo_sacar(){
   const mensajeError = document.getElementById("mensaje-no-completo");
   mensajeError.style.display = "none";
 }
-/*function errorCartel(){
+function errorCartel(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
-}*/
+}
