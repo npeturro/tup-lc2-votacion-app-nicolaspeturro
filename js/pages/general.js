@@ -159,6 +159,7 @@ async function filtrar() {
 
     console.log(datos_json);
     console.log(datosCompletos);
+    
 
     if (datosCompletos.anioEleccion == 0) {
       cartelAmarillo();
@@ -175,12 +176,14 @@ async function filtrar() {
         data = await response.json();
         console.log(data);
       }
-
+      
     }} catch (error) {
       console.error("Error en la solicitud: " + error);
+      
     }
 
   //--Llenado de cuadros pequeños--//
+  console.log("LA RE PUTA MADRE")
   const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
   const electores = data.estadoRecuento.cantidadElectores;
   const participacion = data.estadoRecuento.participacionPorcentaje;
@@ -191,17 +194,11 @@ async function filtrar() {
   m_electores.innerHTML = `Electores<br>${electores}`;
   const m_participacion = document.getElementById("participacion");
   m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
-  const titulo = document.getElementById("titulo");
-  const subtitulo = document.getElementById("subtitulo");
+  let titulo = document.getElementById("titulo");
+  let subtitulo = document.getElementById("subtitulo");
   titulo.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales`;
   subtitulo.innerHTML = `${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
-
-  const valoresPositivos = data.valoresTotalizadosPositivos.idAgrupacion;
-  {valoresPositivos:{colorPleno, colorLiviano}}
-
-
-
-
+  agrupacionPolitica()
 
   //--Llenado de cuadros grandes--//
 
@@ -210,7 +207,7 @@ async function filtrar() {
 
   
   //TENEMOS Q IMPORTAR EL MODULO MAPAS.JS Y AUN NO PUDE Y ES POR PROBLEMAS DE SEGURIDAD, TE BLOQUEA LA PAGINA PORQ CREE Q ES UN VIRUS
-  try{
+  /*try{
     const response = await fetch('mapas.json')
 
     if (response.ok){
@@ -226,7 +223,7 @@ async function filtrar() {
      
   } catch (error) {
     console.error("Error en la solicitud: " + error);
-  }
+  }*/
   
 }
 
@@ -258,7 +255,28 @@ function agregarInforme(){
 
   } else {
     console.log('El informe ya existe en el array.');
+  }
 }
+//--Funcion Agrupacion Politica--//
+function agrupacionPolitica(){
+  let indice = 0;
+  data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
+
+    const cuadroAgrupacion = document.getElementById("ag-politica");
+    agrupaciones.listas.forEach((lista) => { 
+    let valorCalulado = lista.votos * 100 / valoresTotalizadosPositivos.votos;   
+    const datosAgrupacion = `<p><b>${agrupaciones.nombreAgrupacion}</b></p>
+    <hr>
+    <p>${lista.nombre} ${valorCalulado} % ${lista.votos} votos</p>
+    <div class="progress" style="background: ${colores[indice].colorPleno}">
+        <div class="progress-bar" style="width:73%; background: ${colores[indice].colorLiviano}">
+            <span class="progress-bar-text">${valorCalulado}%</span>
+        </div>
+    </div>`
+    cuadroAgrupacion.innerHTML += datosAgrupacion;
+    indice ++;
+  });
+});
 
 }
 
@@ -310,8 +328,8 @@ function cartelAmarillo_sacar(){
   const mensajeError = document.getElementById("mensaje-no-completo");
   mensajeError.style.display = "none";
 }
-function errorCartel(){
+/*function errorCartel(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
-}
+}*/
