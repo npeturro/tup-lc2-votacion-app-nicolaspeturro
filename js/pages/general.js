@@ -10,7 +10,7 @@ let seccionSeleccionada = document.getElementById("seccion");
 let datos_json;
 let datosCompletos = {};
 let IdCargo;
-let data; //Ultimo JSON de boton Filtrar() 
+let data; //Ultimo JSON de boton Filtrar()
 
 //---CONSULTA AÑO---//
 async function consultaElectoral() {
@@ -180,6 +180,7 @@ async function filtrar() {
       console.error("Error en la solicitud: " + error);
     }
 
+  //--Llenado de cuadros pequeños--//
   const mesasEscrutadas = data.estadoRecuento.mesasTotalizadas;
   const electores = data.estadoRecuento.cantidadElectores;
   const participacion = data.estadoRecuento.participacionPorcentaje;
@@ -190,6 +191,12 @@ async function filtrar() {
   m_electores.innerHTML = `Electores<br>${electores}`;
   const m_participacion = document.getElementById("participacion");
   m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
+
+  //--Llenado de cuadros grandes--//
+
+  //--Cuadro agrupaciones politicas--//
+  
+
   
   //TENEMOS Q IMPORTAR EL MODULO MAPAS.JS Y AUN NO PUDE Y ES POR PROBLEMAS DE SEGURIDAD, TE BLOQUEA LA PAGINA PORQ CREE Q ES UN VIRUS
   /*try{
@@ -210,6 +217,38 @@ async function filtrar() {
     console.error("Error en la solicitud: " + error);
   }*/
   
+}
+
+function agregarInforme(){
+
+  const vAnio = datosCompletos.anioEleccion
+  const vTipoRecuento = datosCompletos.tipoRecuento
+  const vTipoEleccion = datosCompletos.tipoEleccion
+  const vCategoriaId = datosCompletos.categoriaId
+  const vDistrito = datosCompletos.distritoId
+  const vSeccionProvincial = datosCompletos.seccionProvincialId
+  const vSeccionID = datosCompletos.seccionId
+
+  //Creando el Array para agregarlo al LocalStorage
+  let informe = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistrito, vSeccionProvincial, vSeccionID];
+
+  //Obteniendo el Array actual de localStorage o inicializando uno nuevo
+  let informesArray = JSON.parse(localStorage.getItem('INFORMES')) || [];
+
+  //Comprobando q la busqueda ya no exista en el localStorage
+  if (!informesArray.includes(informe)){
+    
+    //Agregando el nuevo array al Array general
+    informesArray.push(informe);
+
+    //Almacenando el Array actualizado en localStorage
+    localStorage.setItem('INFORMES', JSON.stringify(informesArray));
+    console.log('Nuevo informe agregado con éxito.');
+
+  } else {
+    console.log('El informe ya existe en el array.');
+}
+
 }
 
 //--Funciones de limpieza--//
