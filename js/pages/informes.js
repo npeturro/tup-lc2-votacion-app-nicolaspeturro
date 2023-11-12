@@ -6,8 +6,9 @@ let electores;
 let participacion;
 let informes;
 let datosInforme = {};
-let votosAgrupacion;
-let nombreAgrupacion;
+let votosAgrupacion = [];
+let nombreAgrupacion = [];
+let votosPorcentaje = [];
 
 (async () => {
     
@@ -32,13 +33,17 @@ let nombreAgrupacion;
             if (response.ok) {
                 data = await response.json();
                 console.log(data);
-                console.log(datos);
-                console.log(datos[12][0].nombreAgrupacion);
-                /*let contador = 1;
-                datos[12].forEach((info) => {
-                  console.log(info[12][contador].nombreAgrupacion);
-                  contador ++
-                });*/
+                let contador = 0;
+                data.valoresTotalizadosPositivos.forEach((info) => {
+                  let nombre = info.nombreAgrupacion;
+                  nombreAgrupacion.push(nombre);
+                  let votos = info.votos;
+                  votosAgrupacion.push(votos);
+                  let votosP = info.votosPorcentaje;
+                  votosPorcentaje.push(votosP);
+                });
+                
+                console.log(nombreAgrupacion);
 
                 datosInforme = {
                   anio: datos[0],
@@ -46,9 +51,9 @@ let nombreAgrupacion;
                   mesasEscrutadas: datos[9],
                   electores: datos[10],
                   participacion: datos[11],
-                  agrupacionNombre: datos[12][0].nombreAgrupacion,
-                  agrupacionVotos: datos[12][0].votos,
-                  agrupacionPorcentaje: datos[12][0].votosPorcentaje,
+                  agrupacionNombre: nombreAgrupacion,
+                  agrupacionVotos: votosAgrupacion,
+                  agrupacionPorcentaje: votosPorcentaje,
                   distritoNombre: datos[13],
                   cargoNombre: datos[14],
                   tipoEleccionNombre: datos[15]
@@ -76,6 +81,7 @@ let nombreAgrupacion;
 })();
 
 function mostrarInforme(){
+  let contador = 0;
   let tabla = document.getElementById("sec-contenido");
   const datosAgrupacion = `
   <table>
@@ -293,14 +299,14 @@ function mostrarInforme(){
                         </div>
                     </td>
                     <td>
-                        <p>${datosInforme.agrupacionNombre}<br>${datosInforme.agrupacionPorcentaje}%<br>${datosInforme.agrupacionVotos} votos</p>
+                        <p>${datosInforme.agrupacionNombre[contador]}<br>${datosInforme.agrupacionVotos[contador]}%<br>${datosInforme.agrupacionPorcentaje[contador]} votos</p>
                         
                     </td>
                 </tbody>
             </table>
         </section>
     </main>`
-
+    contador ++
     tabla.innerHTML += datosAgrupacion
 
 }
