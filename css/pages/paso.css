@@ -307,6 +307,7 @@
 }
 
 .chart-wrap {
+    display: none;
     --chart-width: 260px;
     --grid-color: #aaa;
     --bar-thickness: 25px;

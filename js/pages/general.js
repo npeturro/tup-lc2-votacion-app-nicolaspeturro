@@ -291,6 +291,8 @@ function agregarMapa(){
 function resumenVotos(){
   const resumenVotos = document.getElementById("resumen-votos");
   resumenVotos.innerHTML = ``
+  const style = document.getElementById("chart-wrap");
+  style.style.display = "flex";
   let indice = 0;
   data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
 
