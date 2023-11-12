@@ -123,6 +123,28 @@
     margin-bottom: 5px;
     width: 70px;
 }
+#index-btn{
+    text-decoration: none;
+    color: #FFF;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 5px;
+}
+#index-li:hover{
+    background-color: #6d6c6c;;
+}
+#index-li{
+    text-decoration: none;
+    color: #FFF;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 5px;
+    margin-left: 320px;
+    margin-bottom: 5px;
+    width: 70px;
+}
 .sec-messages {
     display: flex;
     flex-direction: column;
