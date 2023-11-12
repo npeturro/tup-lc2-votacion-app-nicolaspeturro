@@ -160,7 +160,8 @@ function comboSeccion() {
 async function filtrar() {
 
   try{
-
+    mostrarCarga()
+    ocultarCarga()
     console.log(datos_json);
     console.log(datosCompletos);
     
@@ -361,4 +362,19 @@ function errorCartel(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = `Elecciones ${datosCompletos.anioEleccion} | Generales <br> ${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
+}
+function mostrarCarga() {
+  const carga = document.getElementById("carga");
+  const main = document.getElementById("main")
+  main.style.display = "none"
+  carga.style.display = "block";
+}
+
+function ocultarCarga() {
+  setTimeout(function() {
+    const carga = document.getElementById("carga");
+    carga.style.display = "none";
+    const main = document.getElementById("main")
+    main.style.display = "block"
+  }, 2000);
 }

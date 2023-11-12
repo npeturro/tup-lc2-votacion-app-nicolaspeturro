@@ -11,7 +11,8 @@ let nombreAgrupacion = [];
 let votosPorcentaje = [];
 
 (async () => {
-    
+    mostrarCarga()
+    ocultarCarga()
     //Verificar si hay datos en el localStorage
     if (localStorage.getItem('INFORMES') !== null) {
         
@@ -33,17 +34,9 @@ let votosPorcentaje = [];
             if (response.ok) {
                 data = await response.json();
                 console.log(data);
-                let contador = 0;
-                data.valoresTotalizadosPositivos.forEach((info) => {
-                  let nombre = info.nombreAgrupacion;
-                  nombreAgrupacion.push(nombre);
-                  let votos = info.votos;
-                  votosAgrupacion.push(votos);
-                  let votosP = info.votosPorcentaje;
-                  votosPorcentaje.push(votosP);
-                });
+                             
                 
-                console.log(nombreAgrupacion);
+                
 
                 datosInforme = {
                   anio: datos[0],
@@ -51,9 +44,9 @@ let votosPorcentaje = [];
                   mesasEscrutadas: datos[9],
                   electores: datos[10],
                   participacion: datos[11],
-                  agrupacionNombre: nombreAgrupacion,
-                  agrupacionVotos: votosAgrupacion,
-                  agrupacionPorcentaje: votosPorcentaje,
+                  //agrupacionNombre: nombreAgrupacion,
+                  //agrupacionVotos: votosAgrupacion,
+                  //agrupacionPorcentaje: votosPorcentaje,
                   distritoNombre: datos[13],
                   cargoNombre: datos[14],
                   tipoEleccionNombre: datos[15]
@@ -298,16 +291,21 @@ function mostrarInforme(){
                             <p id="participacion-informe">Participación sobre escrutados<br>${datosInforme.participacion}%</p>
                         </div>
                     </td>
-                    <td>
-                        <p>${datosInforme.agrupacionNombre[contador]}<br>${datosInforme.agrupacionVotos[contador]}%<br>${datosInforme.agrupacionPorcentaje[contador]} votos</p>
-                        
+                    <td id="agrup-informes${contador}">
+                                                
                     </td>
                 </tbody>
             </table>
         </section>
     </main>`
-    contador ++
+    
+    data.valoresTotalizadosPositivos.forEach((info) => {
+      let informacion_agrup = document.getElementById(`agrup-informes${contador}`);
+      informacion_agrup.innerHTML += `<p>${info.nombreAgrupacion}<br>${info.votosPorcentaje}%<br>${info.votos} votos</p>`
+    });
+    
     tabla.innerHTML += datosAgrupacion
+
 
 }
 
@@ -372,4 +370,19 @@ function cartelVerde_sacar(){
 function cartelAmarillo_sacar(){
   const mensajeError = document.getElementById("mensaje-no-completo");
   mensajeError.style.display = "none";
+}
+function mostrarCarga() {
+  const carga = document.getElementById("carga");
+  const main = document.getElementById("main")
+  main.style.display = "none"
+  carga.style.display = "block";
+}
+
+function ocultarCarga() {
+  setTimeout(function() {
+    const carga = document.getElementById("carga");
+    carga.style.display = "none";
+    const main = document.getElementById("main")
+    main.style.display = "block"
+  }, 2000);
 }

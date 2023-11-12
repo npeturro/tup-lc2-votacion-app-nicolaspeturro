@@ -137,7 +137,7 @@
 }
 
 #mensaje-exito {
-    display: flex;
+    display: none;
     height: 50px;
     color: #FFffFF;
     justify-content: center;
@@ -149,7 +149,7 @@
 }
 
 #mensaje-error {
-    display: flex;
+    display: none;
     height: 50px;
     color: #FFffFF;
     justify-content: center;
@@ -161,7 +161,7 @@
 }
 
 #mensaje-no-completo {
-    display: flex;
+    display: none;
     height: 50px;
     color: #FFffFF;
     justify-content: center;
