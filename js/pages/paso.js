@@ -173,7 +173,6 @@ async function filtrar() {
       if (datosCompletos.seccionProvincialId == null){
         datosCompletos.seccionProvincialId = 0;
       }
-      //YA CAMBIÉ TODO A ASYNC-TRY-CATCH
       const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datosCompletos.anioEleccion}&tipoRecuento=${datosCompletos.tipoRecuento}&tipoEleccion=${datosCompletos.tipoEleccion}&categoriaId=${datosCompletos.categoriaId}&distritoId=${datosCompletos.distritoId}&seccionProvincialId=${datosCompletos.seccionProvincialId}&seccionId=${datosCompletos.seccionId}&circuitoId=${datosCompletos.circuitoId}&mesaId=${datosCompletos.mesaId}`;
       const response = await fetch(fetchUrl);
 
@@ -207,14 +206,7 @@ async function filtrar() {
   agrupacionPolitica()
   agregarMapa()
   resumenVotos()
-
-  //--Llenado de cuadros grandes--//
-
-  //--Cuadro agrupaciones politicas--//
-  
-
-
-  
+ 
 }
 
 function agregarInforme(){
@@ -247,10 +239,12 @@ function agregarInforme(){
 
     //Almacenando el Array actualizado en localStorage
     localStorage.setItem('INFORMES', JSON.stringify(informesArray));
+    cartelVerde()
     console.log('Nuevo informe agregado con éxito.');
 
   } else {
     console.log('El informe ya existe en el array.');
+    cartelRojo()
   }
 }
 //--Funcion Agrupacion Politica--//
@@ -260,30 +254,26 @@ function agrupacionPolitica(){
   let indice = 0;
   data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
 
-    //ACORDARSE DE ARMARLO CON LA LISTA EN PASO
-
-    //agrupaciones.listas.forEach((lista) => { 
-    //const valorCalculado = agrupaciones.votos * 100 / valoresTotalizadosPositivos.votos;   
-    const datosAgrupacion = `<p><b>${agrupaciones.nombreAgrupacion}</b></p>
-    <hr>
-    <p>${agrupaciones.votosPorcentaje}% ${agrupaciones.votos} VOTOS</p>
-    <div class="progress" style="background: ${colores[indice].colorLiviano}">
-        <div class="progress-bar" style="width:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}">
-            <span class="progress-bar-text">${agrupaciones.votosPorcentaje}%</span>
-        </div>
-    </div>`
-    cuadroAgrupacion.innerHTML += datosAgrupacion;
-    indice ++;
+    agrupaciones.listas.forEach((lista) => { 
+      const valorCalculado = lista.votos * 100 / agrupaciones.votos;   
+      const datosAgrupacion = `<p><b>${lista.nombre}</b></p>
+      <hr>
+      <p>${valorCalculado}% ${lista.votos} VOTOS</p>
+      <div class="progress" style="background: ${colores[indice].colorLiviano}">
+          <div class="progress-bar" style="width:${valorCalculado}%; background: ${colores[indice].colorPleno}">
+              <span class="progress-bar-text">${valorCalculado}%</span>
+          </div>
+      </div>`
+      cuadroAgrupacion.innerHTML += datosAgrupacion;
+      indice ++;
   });
   
+});
 }
-
 function agregarMapa(){
-  //agregar a funcion y cambiar nombre
   let titulo_mapas = document.getElementById("mapas_titulo");
   let mapa_principal = document.getElementById("mapa_principal");
   let idMapas = datosCompletos.distritoId;
-  //ver si se puede cambiar la forma en la qe trae el nombre
   titulo_mapas.innerHTML = `${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text}`
   mapa_principal.innerHTML = `${provincias[idMapas]}`
 }
@@ -296,20 +286,13 @@ function resumenVotos(){
   let indice = 0;
   data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
 
-    const datosAgrupacion = `<div class="bar" style="--bar-value:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}" data-name="" title="${agrupaciones.nombreAgrupacion} 
+    const datosAgrupacion = `<div class="bar" style="--bar-value:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}" data-name="Partido ${indice + 1}" title="${agrupaciones.nombreAgrupacion} 
     ${agrupaciones.votosPorcentaje}%" ></div>`
     resumenVotos.innerHTML += datosAgrupacion;
     indice ++;
   });
   
 }
-
-
-
-
-
-
-
 
 
 //--Funciones de limpieza--//
@@ -335,11 +318,13 @@ function limpiarSeccion() {
 function cartelRojo(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
+  mensajeError.innerHTML = "Se produjo un error al cargar resultados"
   setTimeout(cartelRojo_sacar,3000)
 }
 function cartelVerde(){
   const mensajeError = document.getElementById("mensaje-exito");
   mensajeError.style.display = "flex";
+  mensajeError.innerHTML = "Se agrego con éxito el resultado al informe"
   setTimeout(cartelVerde_sacar,3000)
 }
 function cartelAmarillo(){

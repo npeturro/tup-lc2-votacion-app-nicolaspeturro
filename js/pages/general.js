@@ -151,7 +151,6 @@ function comboSeccion() {
     mesaId: '',
   };
 
-  //console.log(datosCompletos);
 
 });
 }
@@ -207,13 +206,6 @@ async function filtrar() {
   agrupacionPolitica()
   agregarMapa()
   resumenVotos()
-
-  //--Llenado de cuadros grandes--//
-
-  //--Cuadro agrupaciones politicas--//
-  
-
-
   
 }
 
@@ -247,9 +239,11 @@ function agregarInforme(){
 
     //Almacenando el Array actualizado en localStorage
     localStorage.setItem('INFORMES', JSON.stringify(informesArray));
+    cartelVerde()
     console.log('Nuevo informe agregado con éxito.');
 
   } else {
+    cartelRojo()
     console.log('El informe ya existe en el array.');
   }
 }
@@ -259,11 +253,7 @@ function agrupacionPolitica(){
   cuadroAgrupacion.innerHTML = ``
   let indice = 0;
   data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
-
-    //ACORDARSE DE ARMARLO CON LA LISTA EN PASO
-
-    //agrupaciones.listas.forEach((lista) => { 
-    //const valorCalculado = agrupaciones.votos * 100 / valoresTotalizadosPositivos.votos;   
+  
     const datosAgrupacion = `<p><b>${agrupaciones.nombreAgrupacion}</b></p>
     <hr>
     <p>${agrupaciones.votosPorcentaje}% ${agrupaciones.votos} VOTOS</p>
@@ -296,21 +286,13 @@ function resumenVotos(){
   let indice = 0;
   data.valoresTotalizadosPositivos.forEach((agrupaciones) => {
 
-    const datosAgrupacion = `<div class="bar" style="--bar-value:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}" data-name="" title="${agrupaciones.nombreAgrupacion} 
+    const datosAgrupacion = `<div class="bar" style="--bar-value:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}" data-name="Partido ${indice + 1}" title="${agrupaciones.nombreAgrupacion} 
     ${agrupaciones.votosPorcentaje}%" ></div>`
     resumenVotos.innerHTML += datosAgrupacion;
     indice ++;
   });
   
 }
-
-
-
-
-
-
-
-
 
 //--Funciones de limpieza--//
 function limpiarAnio() {
@@ -335,11 +317,13 @@ function limpiarSeccion() {
 function cartelRojo(){
   const mensajeError = document.getElementById("mensaje-error");
   mensajeError.style.display = "flex";
+  mensajeError.innerHTML = "Se produjo un error al cargar resultados"
   setTimeout(cartelRojo_sacar,3000)
 }
 function cartelVerde(){
   const mensajeError = document.getElementById("mensaje-exito");
   mensajeError.style.display = "flex";
+  mensajeError.innerHTML = "Se agrego con éxito el resultado al informe"
   setTimeout(cartelVerde_sacar,3000)
 }
 function cartelAmarillo(){

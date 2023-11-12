@@ -21,8 +21,6 @@ let votosPorcentaje = [];
         
         // Recorrer el array
         informes.forEach(async (datos) => {
-        // Separar los datos (suponiendo que son una cadena y necesitan ser divididos)
-        //const informesSeparados = datos.split(',');
 
         // Construir la URL con los datos separados
         const fetchUrl = `https://resultados.mininterior.gob.ar/api/resultados/getResultados?anioEleccion=${datos[0]}&tipoRecuento=${datos[1]}&tipoEleccion=${datos[2]}&categoriaId=${datos[3]}&distritoId=${datos[4]}&seccionProvincialId=${datos[5]}&seccionId=${datos[6]}&circuitoId=${datos[7]}&mesaId=${datos[8]}`;
@@ -34,9 +32,7 @@ let votosPorcentaje = [];
             if (response.ok) {
                 data = await response.json();
                 console.log(data);
-                             
-                
-                
+
 
                 datosInforme = {
                   anio: datos[0],
@@ -44,9 +40,7 @@ let votosPorcentaje = [];
                   mesasEscrutadas: datos[9],
                   electores: datos[10],
                   participacion: datos[11],
-                  //agrupacionNombre: nombreAgrupacion,
-                  //agrupacionVotos: votosAgrupacion,
-                  //agrupacionPorcentaje: votosPorcentaje,
+
                   distritoNombre: datos[13],
                   cargoNombre: datos[14],
                   tipoEleccionNombre: datos[15]
@@ -54,9 +48,6 @@ let votosPorcentaje = [];
                 
                 
                 mostrarInforme()
-                //mostrarProvincia()
-                //mostrarEleccion()
-                //mostrarDatos()
 
             } else {
                 console.error('Error en la solicitud a la API');
@@ -68,7 +59,12 @@ let votosPorcentaje = [];
     });
 
 } else {
+    cartelAmarillo()
+    let tabla = document.getElementById("sec-contenido");
+    tabla.innerHTML = `
+    <img src="img/pngtree-triangular-caution-sign-warning-symbol-png-image_9156604.png" alt="No hay datos" height="250px" width="250px" id="img-precaucion" style="margin-left: 40%;">`
     console.log('No hay datos en el localStorage');
+
 }
 
 })();
@@ -309,45 +305,12 @@ function mostrarInforme(){
 
 }
 
-function mostrarProvincia(){
-    
-    let mapa_principal = document.getElementById("provincia-informe");
-    //let idMapas = datos[3];
-    //console.log(idMapas)
-    //ver si se puede cambiar la forma en la qe trae el nombre
-    mapa_principal.innerHTML = `${provincias[distritoID]}`;
-}
-function mostrarEleccion(){
-  //console.log(datos[0])
-  let titulo = document.getElementById("titulo-informe");
-  let subtitulo = document.getElementById("subtitulo-informe");
-  /*titulo.innerHTML = `Elecciones ${informes[0]} | Generales`;
-  subtitulo.innerHTML = `${datosCompletos.anioEleccion} > ${cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text} > ${distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text} > ${seccionSeleccionada.options[seccionSeleccionada.selectedIndex].text}`;
-  */
-}
-function mostrarDatos(){
-    
-    const m_escrutadas = document.getElementById("escrutadas-informe");
-    m_escrutadas.innerHTML = `Mesas Escrutadas<br>${mesasEscrutadas}`;
-    const m_electores = document.getElementById("electores-informe");
-    m_electores.innerHTML = `Electores<br>${electores}`;
-    const m_participacion = document.getElementById("participacion-informe");
-    m_participacion.innerHTML = `Participación sobre escrutados<br>${participacion}%`;
-}
-function mostrarAgrupacion(){
-
-}
-
-
-
-
-
-
+//--Funciones Mensajes--//
 function cartelRojo(){
-    const mensajeError = document.getElementById("mensaje-error");
-    mensajeError.style.display = "flex";
-    setTimeout(cartelRojo_sacar,3000)
-  }
+  const mensajeError = document.getElementById("mensaje-error");
+  mensajeError.style.display = "flex";
+  setTimeout(cartelRojo_sacar,3000)
+}
 function cartelVerde(){
   const mensajeError = document.getElementById("mensaje-exito");
   mensajeError.style.display = "flex";

@@ -94,14 +94,16 @@ h3 {
 }
 
 .footer-icons img {
-  height: 40px;
-  width: 140px;
+  height: 30px;
+  width: 110px;
   display: inline-flex;
   margin-left: 15px;
 }
 
+
 .footer-text p{
   color: var(--texto-footer);
+  line-height: 2;
 }
 
 #index-li {
