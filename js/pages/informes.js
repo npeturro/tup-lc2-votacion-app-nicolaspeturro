@@ -308,31 +308,43 @@ function mostrarInforme(){
 //--Funciones Mensajes--//
 function cartelRojo(){
   const mensajeError = document.getElementById("mensaje-error");
+  mensajeError.style.opacity = 1
   mensajeError.style.display = "flex";
   setTimeout(cartelRojo_sacar,3000)
 }
 function cartelVerde(){
   const mensajeError = document.getElementById("mensaje-exito");
+  mensajeError.style.opacity = 1
   mensajeError.style.display = "flex";
   setTimeout(cartelVerde_sacar,3000)
 }
 function cartelAmarillo(){
   const mensajeError = document.getElementById("mensaje-no-completo");
+  mensajeError.style.opacity = 1
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = "No se encuentran valores que mostrar"
   setTimeout(cartelAmarillo_sacar,5000)
 }
 function cartelRojo_sacar(){
   const mensajeError = document.getElementById("mensaje-error");
-  mensajeError.style.display = "none";
+  mensajeError.style.opacity = 0;
+  mensajeError.addEventListener("transitionend", function () {
+    mensajeError.style.display = "none";
+  });
 }
 function cartelVerde_sacar(){
   const mensajeError = document.getElementById("mensaje-exito");
-  mensajeError.style.display = "none";
+  mensajeError.style.opacity = 0;
+  mensajeError.addEventListener("transitionend", function () {
+    mensajeError.style.display = "none";
+  });
 }
 function cartelAmarillo_sacar(){
   const mensajeError = document.getElementById("mensaje-no-completo");
-  mensajeError.style.display = "none";
+  mensajeError.style.opacity = 0; 
+  mensajeError.addEventListener("transitionend", function () {
+    mensajeError.style.display = "none";
+  });
 }
 function mostrarCarga() {
   const carga = document.getElementById("carga");

@@ -318,33 +318,45 @@ function limpiarSeccion() {
 //--Funciones Mensajes--//
 function cartelRojo(){
   const mensajeError = document.getElementById("mensaje-error");
+  mensajeError.style.opacity = 1
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = "Se produjo un error al cargar resultados"
   setTimeout(cartelRojo_sacar,3000)
 }
 function cartelVerde(){
   const mensajeError = document.getElementById("mensaje-exito");
+  mensajeError.style.opacity = 1
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = "Se agrego con éxito el resultado al informe"
   setTimeout(cartelVerde_sacar,3000)
 }
 function cartelAmarillo(){
   const mensajeError = document.getElementById("mensaje-no-completo");
+  mensajeError.style.opacity = 1
   mensajeError.style.display = "flex";
   mensajeError.innerHTML = "Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR"
   setTimeout(cartelAmarillo_sacar,5000)
 }
 function cartelRojo_sacar(){
   const mensajeError = document.getElementById("mensaje-error");
-  mensajeError.style.display = "none";
+  mensajeError.style.opacity = 0;
+  mensajeError.addEventListener("transitionend", function () {
+    mensajeError.style.display = "none";
+  });
 }
 function cartelVerde_sacar(){
   const mensajeError = document.getElementById("mensaje-exito");
-  mensajeError.style.display = "none";
+  mensajeError.style.opacity = 0;
+  mensajeError.addEventListener("transitionend", function () {
+    mensajeError.style.display = "none";
+  });
 }
 function cartelAmarillo_sacar(){
   const mensajeError = document.getElementById("mensaje-no-completo");
-  mensajeError.style.display = "none";
+  mensajeError.style.opacity = 0; 
+  mensajeError.addEventListener("transitionend", function () {
+    mensajeError.style.display = "none";
+  });
 }
 function errorCartel(){
   const mensajeError = document.getElementById("mensaje-error");

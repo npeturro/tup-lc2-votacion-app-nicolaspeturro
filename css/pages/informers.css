@@ -126,6 +126,8 @@
     border-radius: 10px;
     width: 400px;
     margin-top: 30px;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
     background-color: var(--mensaje-usuario-verde);
 }
 
@@ -138,6 +140,8 @@
     border-radius: 10px;
     width: 400px;
     margin-top: 30px;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
     background-color: var(--mensaje-usuario-rojo);
 }
 
@@ -150,6 +154,8 @@
     border-radius: 10px;
     width: 400px;
     margin-top: 30px;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
     background-color: var(--mensaje-usuario-amarillo);
 }
 
