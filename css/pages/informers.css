@@ -233,3 +233,6 @@
 table{
     border-collapse: collapse
 }
+#provincia-informe{
+    max-width: 300px;
+}

@@ -1,5 +1,6 @@
 let data;
 let datos;
+let distritoID;
 
 (async () => {
     
@@ -25,8 +26,20 @@ let datos;
                 data = await response.json();
                 console.log(data);
                 console.log(datos);
-                console.log(informes)
                 
+                distritoID = datos[4];
+                mesasEscrutadas = datos[9]
+                electores = datos[10]
+                participacion = datos[11]
+                console.log(distritoID)
+                const opcion = document.getElementById("titulo-informe");
+                /*datos.forEach((informacion) => {
+                  let datosEleccion = `<p class="texto-elecciones-chico" id=""><b>Elecciones ${informacion[0]} | ${informacion[15]}</b></p>
+                  <p class="texto-path-chico" id="subtitulo-informe">${informacion[0]} > ${informacion[15]} > ${informacion[14]} > ${informacion[13]}
+                      </p>`
+                  opcion.innerHTML += datosEleccion;
+                });*/
+
                 mostrarProvincia()
                 //mostrarDatos()
 
@@ -50,10 +63,10 @@ let datos;
 function mostrarProvincia(){
     
     let mapa_principal = document.getElementById("provincia-informe");
-    let idMapas = informes[0].value[3];
-    console.log(idMapas)
+    //let idMapas = datos[3];
+    //console.log(idMapas)
     //ver si se puede cambiar la forma en la qe trae el nombre
-    mapa_principal.innerHTML = `${provincias[idMapas]}`;
+    mapa_principal.innerHTML = `${provincias[distritoID]}`;
 }
 function mostrarEleccion(){
     let titulo = document.getElementById("titulo-informe");

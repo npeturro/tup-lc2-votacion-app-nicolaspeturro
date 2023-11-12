@@ -227,10 +227,13 @@ function agregarInforme(){
   const vSeccionID = datosCompletos.seccionId;
   const vCircuitoID = datosCompletos.circuitoId;
   const vMesaID = datosCompletos.mesaId;
+  const vNombreDistrito = distritoSeleccionado.options[distritoSeleccionado.selectedIndex].text;
+  const vNombreCargo = cargoSeleccionado.options[cargoSeleccionado.selectedIndex].text;
+  const vGeneral = "Generales"
 
 
   //Creando el Array para agregarlo al LocalStorage
-  let informe = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistrito, vSeccionProvincial, vSeccionID, vCircuitoID, vMesaID, mesasEscrutadas, electores, participacion, vTotalizadosPositivos];
+  let informe = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistrito, vSeccionProvincial, vSeccionID, vCircuitoID, vMesaID, mesasEscrutadas, electores, participacion, vTotalizadosPositivos, vNombreDistrito, vNombreCargo, vGeneral];
 
   //Obteniendo el Array actual de localStorage o inicializando uno nuevo
   let informesArray = JSON.parse(localStorage.getItem('INFORMES')) || [];
