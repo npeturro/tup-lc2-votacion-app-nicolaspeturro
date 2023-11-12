@@ -61,6 +61,8 @@ function comboAnio() {
             if (elemento.IdEleccion == tipoEleccion) {
                 console.log(elemento);
 
+                cargoSeleccionado.innerHTML = `<option disabled selected>Cargo</option>`;
+
               elemento.Cargos.forEach((cargo) => {
                 const opcion = document.createElement("option");
                 opcion.value = cargo.IdCargo;

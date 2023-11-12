@@ -20,6 +20,7 @@ let vTotalizadosPositivos;
 async function consultaElectoral() {
 
   cartelAmarillo();
+  
 
   try {
 
@@ -38,11 +39,12 @@ async function consultaElectoral() {
   } catch (error) {
     console.error("Error en la solicitud: " + error);
   }
+
 }
 
 function comboAnio() {
 
-  limpiarCargo()
+  limpiarCargo();
   limpiarDistrito();
   limpiarSeccion();
 
@@ -60,6 +62,8 @@ function comboAnio() {
           datos_json.forEach((elemento) => {
             if (elemento.IdEleccion == tipoEleccion) {
               //console.log(elemento);
+
+              cargoSeleccionado.innerHTML = `<option disabled selected>Cargo</option>`;
 
               elemento.Cargos.forEach((cargo) => {
                 const opcion = document.createElement("option");
@@ -225,28 +229,26 @@ function agregarInforme(){
   const vGeneral = "Generales"
 
 
-  //Creando el Array para agregarlo al LocalStorage
   let informe = [vAnio, vTipoRecuento, vTipoEleccion, vCategoriaId, vDistrito, vSeccionProvincial, vSeccionID, vCircuitoID, vMesaID, mesasEscrutadas, electores, participacion, vTotalizadosPositivos, vNombreDistrito, vNombreCargo, vGeneral];
 
   //Obteniendo el Array actual de localStorage o inicializando uno nuevo
   let informesArray = JSON.parse(localStorage.getItem('INFORMES')) || [];
 
-  //Comprobando q la busqueda ya no exista en el localStorage
-  if (!informesArray.includes(informe)){
-    
-    //Agregando el nuevo array al Array general
-    informesArray.push(informe);
+  // Convirtiendo ambos arrays en cadenas JSON para compararlos
+  let informeString = JSON.stringify(informe);
+  let informesArrayString = informesArray.map(JSON.stringify);
 
-    //Almacenando el Array actualizado en localStorage
-    localStorage.setItem('INFORMES', JSON.stringify(informesArray));
-    cartelVerde()
-    console.log('Nuevo informe agregado con éxito.');
-
+  if (!informesArrayString.includes(informeString)) {
+      informesArray.push(informe);
+      localStorage.setItem('INFORMES', JSON.stringify(informesArray));
+      cartelVerde();
+      console.log('Nuevo informe agregado con éxito.');
   } else {
-    cartelRojo()
-    console.log('El informe ya existe en el array.');
+      cartelRojo();
+      console.log('El informe ya existe en el array.');
   }
 }
+
 //--Funcion Agrupacion Politica--//
 function agrupacionPolitica(){
   const cuadroAgrupacion = document.getElementById("ag-politica");
