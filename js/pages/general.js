@@ -258,7 +258,7 @@ function agrupacionPolitica(){
   
     const datosAgrupacion = `<p><b>${agrupaciones.nombreAgrupacion}</b></p>
     <hr>
-    <p>${agrupaciones.votosPorcentaje}% ${agrupaciones.votos} VOTOS</p>
+    <p>${agrupaciones.votosPorcentaje}%<br>${agrupaciones.votos} VOTOS</p>
     <div class="progress" style="background: ${colores[indice].colorLiviano}">
         <div class="progress-bar" style="width:${agrupaciones.votosPorcentaje}%; background: ${colores[indice].colorPleno}">
             <span class="progress-bar-text">${agrupaciones.votosPorcentaje}%</span>
