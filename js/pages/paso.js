@@ -168,7 +168,7 @@ async function filtrar() {
     console.log(datosCompletos);
     
 
-    if (datosCompletos.anioEleccion == 0) {
+    if (datos_json === undefined) {
       cartelAmarillo();
     } else {
 
