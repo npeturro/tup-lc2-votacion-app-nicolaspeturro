@@ -169,7 +169,7 @@ async function filtrar() {
     console.log(datosCompletos);
     
 
-    if (datosCompletos.anioEleccion == 0) {
+    if (datos_json === undefined) {
       cartelAmarillo();
     } else {
 
@@ -334,7 +334,7 @@ function cartelAmarillo(){
   const mensajeError = document.getElementById("mensaje-no-completo");
   mensajeError.style.opacity = 1
   mensajeError.style.display = "flex";
-  mensajeError.innerHTML = "Debe seleccionar los valores a filtrar y hacer clic en el botón FILTRAR"
+  mensajeError.innerHTML = "Debe seleccionar los valores y hacer clic en el botón FILTRAR"
   setTimeout(cartelAmarillo_sacar,5000)
 }
 function cartelRojo_sacar(){
