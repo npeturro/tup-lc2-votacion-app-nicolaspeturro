@@ -260,10 +260,10 @@ function agrupacionPolitica(){
       const valorCalculado = lista.votos * 100 / agrupaciones.votos;   
       const datosAgrupacion = `<p><b>${lista.nombre}</b></p>
       <hr>
-      <p>${valorCalculado}%<br>${lista.votos} VOTOS</p>
+      <p>${valorCalculado.toFixed(2)}%<br>${lista.votos} VOTOS</p>
       <div class="progress" style="background: ${colores[indice].colorLiviano}">
-          <div class="progress-bar" style="width:${valorCalculado}%; background: ${colores[indice].colorPleno}">
-              <span class="progress-bar-text">${valorCalculado}%</span>
+          <div class="progress-bar" style="width:${valorCalculado.toFixed(2)}%; background: ${colores[indice].colorPleno}">
+              <span class="progress-bar-text">${valorCalculado.toFixed(2)}%</span>
           </div>
       </div>`
       cuadroAgrupacion.innerHTML += datosAgrupacion;
